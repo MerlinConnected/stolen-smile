@@ -12,18 +12,8 @@
 		]
 	},
 	{
-		"name": "grassColorTexture",
-		"type": "texture",
-		"path": "textures/dirt/color.jpg"
-	},
-	{
-		"name": "grassNormalTexture",
-		"type": "texture",
-		"path": "textures/dirt/normal.jpg"
-	},
-	{
-		"name": "foxModel",
+		"name": "sceneModel",
 		"type": "gltf",
-		"path": "models/Fox/glTF/Fox.gltf"
+		"path": "models/scene.glb"
 	}
 ]
