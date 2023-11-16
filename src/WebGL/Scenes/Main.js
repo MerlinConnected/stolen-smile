@@ -18,7 +18,8 @@ export default class Main {
 			trigger: '.section1',
 			markers: true,
 			start: 'top top',
-			onEnter: () => {
+			onToggle: (self) => {
+				if (!self.isActive) return
 				console.log('enter')
 			},
 		})
