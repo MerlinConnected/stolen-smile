@@ -39,6 +39,8 @@ export default class Camera {
 			this.options.near,
 			this.options.far,
 		)
+		this.instance.position.set(this.options.position.x, this.options.position.y, this.options.position.z)
+		this.instance.lookAt(this.options.target.x, this.options.target.y, this.options.target.z)
 		this.instance.name = 'camera'
 		this.scene.add(this.instance)
 	}
@@ -62,6 +64,7 @@ export default class Camera {
 
 	setControls() {
 		this.controls = new OrbitControls(this.instance, this.canvas)
+		this.controls.enabled = false
 		this.controls.addEventListener('change', () => {
 			sessionStorage.setItem('cameraPosition', JSON.stringify(this.instance.position))
 			sessionStorage.setItem('cameraTarget', JSON.stringify(this.controls.target))
@@ -101,6 +104,6 @@ export default class Camera {
 	}
 
 	update() {
-		this.controls.update()
+		// this.controls.update()
 	}
 }

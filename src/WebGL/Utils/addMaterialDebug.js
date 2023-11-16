@@ -112,7 +112,6 @@ export default function addMaterialDebug(folder, material, options = {}) {
 		const keyValue = material[key]
 		const materialOption = materialParams[key]
 
-		console.log(materialOption)
 		if (!(keyValue == null || materialOption.condition)) {
 			switch (materialOption.type) {
 				case 'image': {

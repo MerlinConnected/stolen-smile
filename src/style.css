@@ -5,7 +5,6 @@
 
 html,
 body {
-	overflow: hidden;
 	font-family: sans-serif;
 	color: white;
 }
@@ -15,4 +14,9 @@ body {
 	top: 0;
 	left: 0;
 	outline: none;
+}
+
+.section1,
+.section2 {
+	height: 200vh;
 }
