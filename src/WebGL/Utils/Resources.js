@@ -15,7 +15,7 @@ export default class Resources extends EventEmitter {
 		this.sources = sources
 
 		/**
-		 * @type {{[name: string]: Texture | CubeTexture | Object3D}}
+		 * @type {{[name: string]: Texture | CubeTexture | Object3D | AudioBuffer}}
 		 */
 		this.items = {}
 		this.toLoad = this.sources.length

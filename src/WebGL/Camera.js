@@ -1,6 +1,6 @@
 import Experience from './Experience.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { PerspectiveCamera } from 'three'
+import { PerspectiveCamera, AudioListener } from 'three'
 
 export default class Camera {
 	constructor() {
@@ -27,6 +27,7 @@ export default class Camera {
 		}
 
 		this.setInstance()
+		this.setAudioListener()
 		this.setControls()
 		// this.applySavedSettings()
 		if (this.debug.active) this.setDebug()
@@ -43,6 +44,11 @@ export default class Camera {
 		this.instance.lookAt(this.options.target.x, this.options.target.y, this.options.target.z)
 		this.instance.name = 'camera'
 		this.scene.add(this.instance)
+	}
+
+	setAudioListener() {
+		this.audioListener = new AudioListener()
+		this.instance.add(this.audioListener)
 	}
 
 	applySavedSettings() {

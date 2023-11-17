@@ -15,5 +15,10 @@
 		"name": "sceneModel",
 		"type": "gltf",
 		"path": "models/scene.glb"
+	},
+	{
+		"name": "earthquakeAudio",
+		"type": "audio",
+		"path": "audio/earthquake.mp3"
 	}
 ]
