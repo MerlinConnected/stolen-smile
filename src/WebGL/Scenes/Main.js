@@ -1,44 +1,18 @@
-import Experience from '../Experience.js'
-import Environment from 'components/Environment.js'
-import gsap from 'gsap'
-import ScrollTrigger from 'gsap/ScrollTrigger'
 import SceneComponent from 'components/SceneComponent.js'
-import Lenis from '@studio-freight/lenis'
+import Environment from 'components/Environment.js'
+import ScrollTrigger from 'gsap/ScrollTrigger'
+import Experience from '../Experience.js'
+import gsap from 'gsap'
+import { CustomEase } from 'gsap/CustomEase'
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger, CustomEase)
 
 export default class Main {
 	constructor() {
 		this.experience = new Experience()
 		this.scene = this.experience.scene
 		this.resources = this.experience.resources
-
-		const lenis = new Lenis()
-
-		lenis.on('scroll', ScrollTrigger.update)
-
-		gsap.ticker.add((time) => {
-			lenis.raf(time * 1000)
-		})
-
-		gsap.ticker.lagSmoothing(0)
-
-		function raf(time) {
-			lenis.raf(time)
-			requestAnimationFrame(raf)
-		}
-
-		requestAnimationFrame(raf)
-
-		ScrollTrigger.create({
-			trigger: '.section1',
-			markers: true,
-			start: 'top top',
-			onToggle: (self) => {
-				if (!self.isActive) return
-				console.log('enter')
-			},
-		})
+		this.camera = this.experience.camera
 
 		// Wait for resources
 		this.resources.on('ready', () => {
@@ -46,45 +20,85 @@ export default class Main {
 			this.sceneComponent = new SceneComponent()
 			this.environment = new Environment()
 
+			const bounceBack = CustomEase.create('custom', 'M0,0 C0.2,0 0.691,1.169 0.8,1 0.913,0.822 0.8,0 1,0 ')
+
+			// Section 1 Animation
 			ScrollTrigger.create({
 				trigger: '.section1',
 				markers: true,
 				start: 'top top',
 				onToggle: (self) => {
 					if (!self.isActive) return
-					console.log('section1')
-					gsap.to(this.experience.camera.instance.position, {
+
+					const tl1 = gsap.timeline()
+
+					tl1.to(this.experience.camera.instance.position, {
 						duration: 1,
 						z: 4,
 						ease: 'power3.inOut',
 					})
-
-					gsap.to(this.sceneComponent.paint.position, {
-						duration: 1,
-						z: 0,
-						ease: 'power3.inOut',
-					})
+					tl1.to(
+						this.sceneComponent.paint.position,
+						{
+							duration: 1,
+							z: 0,
+							ease: 'power3.inOut',
+						},
+						'<'
+					)
+					tl1.to(
+						this.experience.camera.options,
+						{
+							duration: 1,
+							fov: 35,
+							ease: bounceBack,
+							onUpdate: () => {
+								this.experience.camera.instance.fov = this.experience.camera.options.fov
+								this.experience.camera.instance.updateProjectionMatrix()
+							},
+						},
+						'<'
+					)
 				},
 			})
 
+			// Section 2 Animation
 			ScrollTrigger.create({
 				trigger: '.section2',
 				markers: true,
 				start: 'top top',
 				onToggle: (self) => {
 					if (!self.isActive) return
-					console.log('section2')
-					gsap.to(this.experience.camera.instance.position, {
-						duration: 1,
-						z: 0,
-						ease: 'power3.inOut',
-					})
 
-					gsap.to(this.sceneComponent.paint.position, {
+					const tl2 = gsap.timeline()
+
+					tl2.to(this.experience.camera.instance.position, {
 						duration: 1,
-						z: -4,
+						z: -1,
 						ease: 'power3.inOut',
 					})
+					tl2.to(
+						this.sceneComponent.paint.position,
+						{
+							duration: 1,
+							z: -5,
+							ease: 'power3.inOut',
+						},
+						'<'
+					)
+					tl2.to(
+						this.experience.camera.options,
+						{
+							duration: 1,
+							fov: 12,
+							ease: bounceBack,
+							onUpdate: () => {
+								this.experience.camera.instance.fov = this.experience.camera.options.fov
+								this.experience.camera.instance.updateProjectionMatrix()
+							},
+						},
+						'<'
+					)
 				},
 			})
 		})
