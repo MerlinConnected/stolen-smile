@@ -1,6 +1,7 @@
-import Experience from './Experience.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { PerspectiveCamera } from 'three'
+import Experience from './Experience.js'
+import * as THREE from 'three'
 
 export default class Camera {
 	constructor() {
@@ -26,6 +27,11 @@ export default class Camera {
 			},
 		}
 
+		this.mouse = {
+			x: 0,
+			y: 0,
+		}
+
 		this.setInstance()
 		this.setControls()
 		// this.applySavedSettings()
@@ -37,12 +43,17 @@ export default class Camera {
 			this.options.fov,
 			this.sizes.width / this.sizes.height,
 			this.options.near,
-			this.options.far,
+			this.options.far
 		)
 		this.instance.position.set(this.options.position.x, this.options.position.y, this.options.position.z)
 		this.instance.lookAt(this.options.target.x, this.options.target.y, this.options.target.z)
 		this.instance.name = 'camera'
 		this.scene.add(this.instance)
+
+		window.addEventListener('mousemove', (event) => {
+			this.mouse.x = 1 - event.clientX / this.sizes.width - 0.5
+			this.mouse.y = event.clientY / this.sizes.height - 0.5
+		})
 	}
 
 	applySavedSettings() {
@@ -105,5 +116,8 @@ export default class Camera {
 
 	update() {
 		// this.controls.update()
+
+		this.instance.position.y = THREE.MathUtils.lerp(this.instance.position.y, (this.mouse.y * Math.PI) / 20, 0.1)
+		this.instance.position.x = THREE.MathUtils.lerp(this.instance.position.x, (this.mouse.x * Math.PI) / 20, 0.1)
 	}
 }
