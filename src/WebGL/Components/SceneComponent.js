@@ -1,6 +1,7 @@
 import Experience from 'webgl/Experience.js'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import addMeshDebug from 'utils/addMeshDebug.js'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -13,7 +14,7 @@ export default class SceneComponent {
 		this.camera = this.experience.camera
 
 		// Resource
-		this.resource = this.resources.items.sceneModel
+		this.resource = this.resources.items.louvreSceneModel
 
 		this.options = {
 			scene: 0,
@@ -47,9 +48,9 @@ export default class SceneComponent {
 		const isReverse = this.options.scene >= sectionNumber
 		this.options.scene = sectionNumber
 
-		gsap.to(this.paint.position, {
-			z: this.options.sceneParams[sectionNumber].paintZPosition,
-		})
+		// gsap.to(this.paint.position, {
+		// 	z: this.options.sceneParams[sectionNumber].paintZPosition,
+		// })
 		gsap.to(this.camera.instance.position, {
 			z: this.options.sceneParams[sectionNumber].cameraZPosition,
 			delay: isReverse ? 0 : 0.25,
@@ -80,7 +81,11 @@ export default class SceneComponent {
 				onToggle: (self) => {
 					if (!self.isActive) return
 					this.setSection(index)
-					if (this.debugFolder) this.debugFolder.refresh()
+					if (this.debugFolder) {
+						this.debugFolder.refreshing = true
+						this.debugFolder.refresh()
+						this.debugFolder.refreshing = false
+					}
 				},
 			})
 		})
@@ -96,7 +101,10 @@ export default class SceneComponent {
 				step: 1,
 			})
 			.on('change', (event) => {
-				if (event.last) this.setSection(event.value, true)
+				if (this.debugFolder.refreshing) return
+				this.setSection(event.value, true)
 			})
+
+		addMeshDebug(this.debugFolder, this.resource.scene)
 	}
 }

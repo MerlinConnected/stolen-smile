@@ -12,10 +12,16 @@
 		]
 	},
 	{
-		"name": "sceneModel",
+		"name": "testSceneModel",
 		"type": "gltf",
-		"path": "models/scene.glb"
+		"path": "models/test_scene.glb"
 	},
+	{
+		"name": "louvreSceneModel",
+		"type": "gltf",
+		"path": "models/louvre.glb"
+	},
+
 	{
 		"name": "earthquakeAudio",
 		"type": "audio",

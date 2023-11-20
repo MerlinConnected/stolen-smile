@@ -11,7 +11,7 @@ export default class Renderer {
 		this.camera = this.experience.camera
 
 		this.options = {
-			postprocessing: true,
+			postprocessing: false,
 		}
 
 		this.setInstance()

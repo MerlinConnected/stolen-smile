@@ -13,7 +13,6 @@ export default class Main {
 		this.resources.on('ready', () => {
 			// Setup
 			this.sceneComponent = new SceneComponent()
-			this.environment = new Environment()
 		})
 	}
 
