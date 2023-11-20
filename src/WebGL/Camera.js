@@ -1,5 +1,5 @@
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { PerspectiveCamera } from 'three'
+import { PerspectiveCamera, AudioListener, Vector3 } from 'three'
 import Experience from './Experience.js'
 import * as THREE from 'three'
 
@@ -15,16 +15,8 @@ export default class Camera {
 			fov: 35,
 			near: 1,
 			far: 100,
-			position: {
-				x: 0,
-				y: 0,
-				z: 4,
-			},
-			target: {
-				x: 0,
-				y: 0,
-				z: 0,
-			},
+			position: new Vector3(0, 0, 4),
+			target: new Vector3(0, 0, 0),
 		}
 
 		this.mouse = {
@@ -33,27 +25,27 @@ export default class Camera {
 		}
 
 		this.setInstance()
-		this.setControls()
+		this.setAudioListener()
 		// this.applySavedSettings()
 		if (this.debug.active) this.setDebug()
 	}
 
 	setInstance() {
-		this.instance = new PerspectiveCamera(
+		this.sceneCamera = new PerspectiveCamera(
 			this.options.fov,
 			this.sizes.width / this.sizes.height,
 			this.options.near,
 			this.options.far
 		)
-		this.instance.position.set(this.options.position.x, this.options.position.y, this.options.position.z)
-		this.instance.lookAt(this.options.target.x, this.options.target.y, this.options.target.z)
-		this.instance.name = 'camera'
-		this.scene.add(this.instance)
+		this.sceneCamera.position.copy(this.options.position)
+		this.sceneCamera.lookAt(this.options.target)
+		this.sceneCamera.name = 'camera'
+		this.instance = this.sceneCamera
+	}
 
-		window.addEventListener('mousemove', (event) => {
-			this.mouse.x = 1 - event.clientX / this.sizes.width - 0.5
-			this.mouse.y = event.clientY / this.sizes.height - 0.5
-		})
+	setAudioListener() {
+		this.audioListener = new AudioListener()
+		this.instance.add(this.audioListener)
 	}
 
 	applySavedSettings() {
@@ -73,21 +65,20 @@ export default class Camera {
 		}
 	}
 
-	setControls() {
-		this.controls = new OrbitControls(this.instance, this.canvas)
-		this.controls.enabled = false
-		this.controls.addEventListener('change', () => {
-			sessionStorage.setItem('cameraPosition', JSON.stringify(this.instance.position))
-			sessionStorage.setItem('cameraTarget', JSON.stringify(this.controls.target))
-		})
+	setControlsCamera() {
+		this.controlsCamera = new PerspectiveCamera(50, this.sizes.width / this.sizes.height)
+		this.controlsCamera.position.set(0, 0, 5)
+		this.controlsCamera.lookAt(0, 0, 0)
+		this.controls = new OrbitControls(this.controlsCamera, this.canvas)
+		this.controlsCamera.name = 'controlsCamera'
 	}
 	resetControls() {
 		sessionStorage.removeItem('cameraPosition')
 		sessionStorage.removeItem('cameraTarget')
 
 		this.controls.reset()
-		this.instance.position.set(this.options.position.x, this.options.position.y, this.options.position.z)
-		this.controls.target.set(this.options.target.x, this.options.target.y, this.options.target.z)
+		this.instance.position.copy(this.options.position)
+		this.controls.target.copy(this.options.target)
 	}
 
 	resize() {
@@ -102,18 +93,22 @@ export default class Camera {
 		})
 
 		this.debugFolder
-			.addButton({
-				title: 'Reset Camera',
+			.addBinding({ controlsCamera: false }, 'controlsCamera', {
+				label: 'Controls camera',
 			})
-			.on('click', this.resetControls.bind(this))
-
-		this.debugFolder
-			.addBinding(this.controls, 'enabled', {
-				label: 'Orbit Controls',
+			.on('change', ({ value }) => {
+				if (value) {
+					if (!this.controlsCamera) this.setControlsCamera()
+					this.controls.enabled = true
+					this.instance = this.controlsCamera
+				} else {
+					this.controls.enabled = false
+					this.instance = this.sceneCamera
+				}
 			})
-			.on('change', this.resetControls.bind(this))
 	}
 
+	update() {}
 	update() {
 		// this.controls.update()
 
