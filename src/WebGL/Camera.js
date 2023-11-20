@@ -1,5 +1,5 @@
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { PerspectiveCamera, AudioListener, Vector3, CameraHelper } from 'three'
+import { PerspectiveCamera, AudioListener, Vector3, CameraHelper, Vector2 } from 'three'
 import Experience from './Experience.js'
 import * as THREE from 'three'
 
@@ -19,10 +19,7 @@ export default class Camera {
 			target: new Vector3(0, 0, 0),
 		}
 
-		this.mouse = {
-			x: 0,
-			y: 0,
-		}
+		this.mouse = new Vector2(0, 0)
 
 		this.setInstance()
 		this.setAudioListener()
@@ -120,7 +117,15 @@ export default class Camera {
 	}
 
 	update() {
-		this.sceneCamera.position.y = THREE.MathUtils.lerp(this.sceneCamera.position.y, (this.mouse.y * Math.PI) / 20, 0.1)
-		this.sceneCamera.position.x = THREE.MathUtils.lerp(this.sceneCamera.position.x, (this.mouse.x * Math.PI) / 20, 0.1)
+		this.sceneCamera.position.x = THREE.MathUtils.lerp(
+			this.sceneCamera.position.x,
+			this.mouse.x * 0.1 + this.options.position.x,
+			0.1,
+		)
+		this.sceneCamera.position.y = THREE.MathUtils.lerp(
+			this.sceneCamera.position.y,
+			this.mouse.y * 0.1 + this.options.position.y,
+			0.1,
+		)
 	}
 }
