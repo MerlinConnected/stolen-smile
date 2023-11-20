@@ -23,7 +23,6 @@ export default class Camera {
 
 		this.setInstance()
 		this.setAudioListener()
-		// this.applySavedSettings()
 		if (this.debug.active) this.setDebug()
 	}
 
@@ -48,23 +47,6 @@ export default class Camera {
 	setAudioListener() {
 		this.audioListener = new AudioListener()
 		this.instance.add(this.audioListener)
-	}
-
-	applySavedSettings() {
-		const cameraPosition = JSON.parse(sessionStorage.getItem('cameraPosition'))
-		const cameraTarget = JSON.parse(sessionStorage.getItem('cameraTarget'))
-
-		if (cameraPosition) {
-			this.instance.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z)
-		} else {
-			this.instance.position.set(this.options.position.x, this.options.position.y, this.options.position.z)
-		}
-
-		if (cameraTarget) {
-			this.controls.target.set(cameraTarget.x, cameraTarget.y, cameraTarget.z)
-		} else {
-			this.controls.target.set(this.options.target.x, this.options.target.y, this.options.target.z)
-		}
 	}
 
 	setControlsCamera() {

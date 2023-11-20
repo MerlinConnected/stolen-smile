@@ -22,14 +22,7 @@ export default class Renderer {
 		this.instance = new WebGLRenderer({
 			canvas: this.canvas,
 			powerPreference: 'high-performance',
-			antialias: false,
-			stencil: false,
-			depth: false,
 		})
-		// this.instance.outputColorSpace = SRGBColorSpace
-		// this.instance.toneMapping = CineonToneMapping
-		// this.instance.toneMappingExposure = 1.75
-		// this.instance.setClearColor('#211d20')
 		this.instance.setSize(this.sizes.width, this.sizes.height)
 		this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
 	}
