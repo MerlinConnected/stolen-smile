@@ -42,17 +42,20 @@ export default class SceneComponent {
 		this.paint = this.model.getObjectByName('Paint')
 	}
 
-	setSection(sectionNumber) {
+	setSection(sectionNumber, force = false) {
+		if (sectionNumber === this.options.scene && !force) return
+		const isReverse = this.options.scene >= sectionNumber
 		this.options.scene = sectionNumber
+
 		gsap.to(this.paint.position, {
 			z: this.options.sceneParams[sectionNumber].paintZPosition,
 		})
 		gsap.to(this.camera.instance.position, {
 			z: this.options.sceneParams[sectionNumber].cameraZPosition,
-			delay: 0.25,
+			delay: isReverse ? 0 : 0.25,
 		})
 
-		if (this.paint.position.z !== this.options.sceneParams[sectionNumber].paintZPosition) {
+		if (!isReverse) {
 			gsap.to(this.camera.options, {
 				keyframes: [
 					{ ease: 'power1.in', duration: 0.75, fov: 70 },
@@ -84,17 +87,16 @@ export default class SceneComponent {
 	}
 
 	setDebug() {
-		this.debugFolder = this.debug.ui
+		this.debugFolder = this.debug.ui.addFolder({ title: 'scene', expanded: true })
 
 		this.debugFolder
 			.addBinding(this.options, 'scene', {
-				label: 'scene',
 				min: 0,
 				max: this.options.sceneParams.length - 1,
 				step: 1,
 			})
-			.on('change', ({ value }) => {
-				this.setSection(value)
+			.on('change', (event) => {
+				if (event.last) this.setSection(event.value, true)
 			})
 	}
 }
