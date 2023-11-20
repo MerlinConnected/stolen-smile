@@ -50,7 +50,7 @@ export default class AudioManager {
 	}
 
 	setDebug() {
-		this.debugFolder = this.debug.ui.addFolder({ title: 'Audio Manager', expanded: true })
+		this.debugFolder = this.debug.ui.addFolder({ title: 'Audio Manager', expanded: false })
 		this.debugFolder
 			.addBlade({
 				view: 'buttongrid',
