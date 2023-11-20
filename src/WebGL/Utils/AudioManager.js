@@ -81,6 +81,18 @@ export default class AudioManager {
 							sound.position.copy(sound.mesh.position)
 							this.debug.ui.refresh()
 						})
+						let controlsIsEnable
+						sound.transform.addEventListener('dragging-changed', ({ value }) => {
+							if (!this.camera.controls) return
+							if (value) {
+								if (this.camera.controls.enabled) controlsIsEnable = true
+								this.camera.controls.enabled = false
+							} else {
+								if (controlsIsEnable) {
+									this.camera.controls.enabled = true
+								}
+							}
+						})
 						sound.transform.attach(sound.mesh)
 						this.scene.add(sound.transform)
 					} else {

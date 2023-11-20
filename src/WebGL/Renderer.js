@@ -10,6 +10,10 @@ export default class Renderer {
 		this.scene = this.experience.scene
 		this.camera = this.experience.camera
 
+		this.options = {
+			postprocessing: true,
+		}
+
 		this.setInstance()
 		this.setPostProcessing()
 	}
@@ -50,6 +54,10 @@ export default class Renderer {
 	}
 
 	update() {
-		this.composer.render()
+		if (this.options.postprocessing) {
+			this.composer.render()
+		} else {
+			this.instance.render(this.scene, this.camera.instance)
+		}
 	}
 }

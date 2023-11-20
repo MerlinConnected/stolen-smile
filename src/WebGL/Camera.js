@@ -1,5 +1,5 @@
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { PerspectiveCamera, AudioListener, Vector3 } from 'three'
+import { PerspectiveCamera, AudioListener, Vector3, CameraHelper } from 'three'
 import Experience from './Experience.js'
 import * as THREE from 'three'
 
@@ -35,7 +35,7 @@ export default class Camera {
 			this.options.fov,
 			this.sizes.width / this.sizes.height,
 			this.options.near,
-			this.options.far
+			this.options.far,
 		)
 		this.sceneCamera.position.copy(this.options.position)
 		this.sceneCamera.lookAt(this.options.target)
@@ -76,6 +76,8 @@ export default class Camera {
 		this.controlsCamera.lookAt(0, 0, 0)
 		this.controls = new OrbitControls(this.controlsCamera, this.canvas)
 		this.controlsCamera.name = 'controlsCamera'
+		this.cameraHelper = new CameraHelper(this.sceneCamera)
+		this.scene.add(this.cameraHelper)
 	}
 	resetControls() {
 		sessionStorage.removeItem('cameraPosition')
@@ -106,16 +108,19 @@ export default class Camera {
 					if (!this.controlsCamera) this.setControlsCamera()
 					this.controls.enabled = true
 					this.instance = this.controlsCamera
+					this.experience.renderer.options.postprocessing = false
+					this.cameraHelper.visible = true
 				} else {
 					this.controls.enabled = false
 					this.instance = this.sceneCamera
+					this.experience.renderer.options.postprocessing = true
+					this.cameraHelper.visible = false
 				}
 			})
 	}
 
 	update() {
-		// this.controls.update()
-		this.instance.position.y = THREE.MathUtils.lerp(this.instance.position.y, (this.mouse.y * Math.PI) / 20, 0.1)
-		this.instance.position.x = THREE.MathUtils.lerp(this.instance.position.x, (this.mouse.x * Math.PI) / 20, 0.1)
+		this.sceneCamera.position.y = THREE.MathUtils.lerp(this.sceneCamera.position.y, (this.mouse.y * Math.PI) / 20, 0.1)
+		this.sceneCamera.position.x = THREE.MathUtils.lerp(this.sceneCamera.position.x, (this.mouse.x * Math.PI) / 20, 0.1)
 	}
 }
