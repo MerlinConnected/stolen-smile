@@ -41,6 +41,11 @@ export default class Camera {
 		this.sceneCamera.lookAt(this.options.target)
 		this.sceneCamera.name = 'camera'
 		this.instance = this.sceneCamera
+
+		window.addEventListener('mousemove', (event) => {
+			this.mouse.x = 1 - event.clientX / this.sizes.width - 0.5
+			this.mouse.y = event.clientY / this.sizes.height - 0.5
+		})
 	}
 
 	setAudioListener() {
@@ -108,10 +113,8 @@ export default class Camera {
 			})
 	}
 
-	update() {}
 	update() {
 		// this.controls.update()
-
 		this.instance.position.y = THREE.MathUtils.lerp(this.instance.position.y, (this.mouse.y * Math.PI) / 20, 0.1)
 		this.instance.position.x = THREE.MathUtils.lerp(this.instance.position.x, (this.mouse.x * Math.PI) / 20, 0.1)
 	}
