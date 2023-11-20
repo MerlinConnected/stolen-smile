@@ -35,14 +35,12 @@ export default class Renderer {
 		const renderPass = new RenderPass(this.scene, this.camera.instance)
 		this.composer.addPass(renderPass)
 
-		const motionBlurEffect = new DepthOfFieldEffect(this.camera.instance, {
-			focusDistance: 0,
-			focalLength: 0.1,
-			bokehScale: 2,
-			height: 480,
+		const depthOfFieldEffect = new DepthOfFieldEffect(this.camera.instance, {
+			focusDistance: 0.45,
+			bokehScale: 10,
 		})
 
-		const effectPass = new EffectPass(this.camera.instance, motionBlurEffect)
+		const effectPass = new EffectPass(this.camera.instance, depthOfFieldEffect)
 		this.composer.addPass(effectPass)
 	}
 
