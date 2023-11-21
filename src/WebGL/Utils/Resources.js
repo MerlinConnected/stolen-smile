@@ -77,6 +77,7 @@ export default class Resources extends EventEmitter {
 		// Load each source
 		for (const source of this.sources) {
 			source.startTime = performance.now()
+
 			switch (source.type) {
 				case 'gltf':
 					this.loaders.gltfLoader.load(source.path, (file) => {
@@ -106,6 +107,8 @@ export default class Resources extends EventEmitter {
 	}
 
 	sourceLoaded(source, file) {
+		const { name, path, type, startTime, ...rest } = source
+		Object.assign(file, rest)
 		this.items[source.name] = file
 		this.loaded++
 		source.endTime = performance.now()
