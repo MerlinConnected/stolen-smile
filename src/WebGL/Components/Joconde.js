@@ -1,6 +1,5 @@
 import Experience from '../Experience.js'
 import { Mesh, MeshBasicMaterial, PlaneGeometry } from 'three'
-import addMeshDebug from 'utils/addMeshDebug.js'
 
 export default class Joconde {
 	constructor() {

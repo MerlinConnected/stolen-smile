@@ -88,7 +88,6 @@ export default class Debug {
 		titleElement.childNodes.forEach((child) => {
 			child.style.pointerEvents = 'none'
 		})
-		// console.log(this.ui.element.children[2]);
 
 		let move = () => {}
 		const handleMouseDown = (event) => {
