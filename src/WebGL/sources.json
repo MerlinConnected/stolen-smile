@@ -2,6 +2,7 @@
 	{
 		"name": "jocondeColorTexture",
 		"type": "texture",
+		"colorSpace": "srgb",
 		"path": "textures/joconde.webp"
 	},
 	{
