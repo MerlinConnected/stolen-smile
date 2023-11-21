@@ -1,5 +1,6 @@
 import Experience from '../Experience.js'
 import { Mesh, MeshBasicMaterial, PlaneGeometry } from 'three'
+import addMeshDebug from 'utils/addMeshDebug.js'
 
 export default class Joconde {
 	constructor() {
@@ -11,6 +12,7 @@ export default class Joconde {
 		this.setGeometry()
 		this.setMaterial()
 		this.setMesh()
+		if (this.debug.active) this.setDebug()
 	}
 
 	setGeometry() {
@@ -28,5 +30,9 @@ export default class Joconde {
 		this.mesh.position.set(0, 2, -3.2)
 		this.mesh.name = 'joconde'
 		this.scene.add(this.mesh)
+	}
+
+	setDebug() {
+		addMeshDebug(this.debug.ui, this.mesh)
 	}
 }
