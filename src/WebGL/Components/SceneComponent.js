@@ -14,9 +14,6 @@ export default class SceneComponent {
 		this.debug = this.experience.debug
 		this.camera = this.experience.camera
 
-		// Resource
-		this.resource = this.resources.items.louvreSceneModel
-
 		this.options = {
 			scene: 0,
 			sceneParams: [
@@ -24,21 +21,28 @@ export default class SceneComponent {
 					cameraZPosition: 13,
 					paintZPosition: -3.2,
 				},
-				{ cameraZPosition: -3, paintZPosition: -16.2 },
+				{ cameraZPosition: -3, paintZPosition: -19.2 },
 			],
 		}
 
-		this.setModel()
+		this.paint = new Joconde()
+		this.setLouvreModel()
+		this.setRoomModel()
 		this.setAnimation()
 		if (this.debug.active) this.setDebug()
 	}
 
-	setModel() {
-		this.model = this.resource.scene
-		this.model.name = 'scene'
-		this.scene.add(this.model)
+	setLouvreModel() {
+		this.louvreModel = this.resources.items.louvreSceneModel.scene
+		this.louvreModel.name = 'louvreScene'
+		this.scene.add(this.louvreModel)
+	}
 
-		this.paint = new Joconde()
+	setRoomModel() {
+		this.roomModel = this.resources.items.louvreSceneModel.scene.clone()
+		this.roomModel.position.z = -16
+		this.roomModel.name = 'roomScene'
+		this.scene.add(this.roomModel)
 	}
 
 	setSection(sectionNumber, force = false) {
@@ -102,6 +106,7 @@ export default class SceneComponent {
 				this.setSection(event.value, true)
 			})
 
-		addMeshDebug(this.debugFolder, this.resource.scene)
+		addMeshDebug(this.debugFolder, this.louvreModel)
+		addMeshDebug(this.debugFolder, this.roomModel)
 	}
 }
