@@ -29,6 +29,5 @@ export default class Joconde {
 		this.mesh.position.set(0, 2, -3.2)
 		this.mesh.name = 'joconde'
 		this.scene.add(this.mesh)
-		addMeshDebug(this.debug.ui.addFolder({ title: 'joconde', expanded: false }), this.mesh)
 	}
 }
