@@ -52,27 +52,29 @@ export default class SceneComponent {
 
 		gsap.to(this.paint.mesh.position, {
 			z: this.options.sceneParams[sectionNumber].paintZPosition,
+			ease: 'power4.inOut',
 		})
 		gsap.to(this.camera.sceneCamera.position, {
 			z: this.options.sceneParams[sectionNumber].cameraZPosition,
-			delay: isReverse ? 0 : 0.25,
+			ease: 'power2.inOut',
 		})
 
-		if (!isReverse) {
-			gsap.to(this.camera.sceneCamera, {
-				keyframes: [
-					{ ease: 'power1.in', duration: 0.75, fov: 30 },
-					{ ease: 'power1.out', duration: 0.25, fov: this.camera.options.fov },
-				],
-				onUpdate: () => {
-					this.camera.sceneCamera.updateProjectionMatrix()
-				},
-			})
-		}
+		// if (!isReverse) {
+		// 	gsap.to(this.camera.sceneCamera, {
+		// 		keyframes: [
+		// 			{ ease: 'power1.in', duration: 0.9, fov: 12 },
+		// 			{ ease: 'power1.out', duration: 1, fov: this.camera.options.fov },
+		// 		],
+		// 		delay: 2,
+		// 		onUpdate: () => {
+		// 			this.camera.sceneCamera.updateProjectionMatrix()
+		// 		},
+		// 	})
+		// }
 	}
 
 	setAnimation() {
-		gsap.defaults({ ease: 'power3.inOut', duration: 1 })
+		gsap.defaults({ ease: 'power3.inOut', duration: 2 })
 
 		this.options.sceneParams.forEach((_, index) => {
 			ScrollTrigger.create({

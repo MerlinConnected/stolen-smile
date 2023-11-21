@@ -1,5 +1,4 @@
 import SceneComponent from 'components/SceneComponent.js'
-import Environment from 'components/Environment.js'
 import Experience from '../Experience.js'
 
 export default class Main {
