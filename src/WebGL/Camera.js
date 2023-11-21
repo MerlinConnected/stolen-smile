@@ -12,11 +12,11 @@ export default class Camera {
 		this.debug = this.experience.debug
 
 		this.options = {
-			fov: 35,
-			near: 1,
-			far: 10,
-			position: new Vector3(0, 2, 4),
-			target: new Vector3(0, 2, 0),
+			fov: 14,
+			near: 0.1,
+			far: 30,
+			position: new Vector3(0, 1.5, 13),
+			target: new Vector3(0, 1.5, 0),
 		}
 
 		this.mouse = new Vector2(0, 0)
@@ -78,6 +78,7 @@ export default class Camera {
 			expanded: false,
 		})
 
+		let postprocessingState
 		this.debugFolder
 			.addBinding({ controlsCamera: false }, 'controlsCamera', {
 				label: 'Controls camera',
@@ -87,12 +88,13 @@ export default class Camera {
 					if (!this.controlsCamera) this.setControlsCamera()
 					this.controls.enabled = true
 					this.instance = this.controlsCamera
+					postprocessingState = this.experience.renderer.options.postprocessing
 					this.experience.renderer.options.postprocessing = false
 					this.cameraHelper.visible = true
 				} else {
 					this.controls.enabled = false
 					this.instance = this.sceneCamera
-					this.experience.renderer.options.postprocessing = true
+					this.experience.renderer.options.postprocessing = postprocessingState
 					this.cameraHelper.visible = false
 				}
 			})

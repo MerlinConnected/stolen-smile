@@ -1,15 +1,8 @@
 [
 	{
-		"name": "environmentMapTexture",
-		"type": "cubeTexture",
-		"path": [
-			"textures/environmentMap/px.jpg",
-			"textures/environmentMap/nx.jpg",
-			"textures/environmentMap/py.jpg",
-			"textures/environmentMap/ny.jpg",
-			"textures/environmentMap/pz.jpg",
-			"textures/environmentMap/nz.jpg"
-		]
+		"name": "jocondeColorTexture",
+		"type": "texture",
+		"path": "textures/joconde.webp"
 	},
 	{
 		"name": "testSceneModel",
@@ -21,7 +14,6 @@
 		"type": "gltf",
 		"path": "models/louvre.glb"
 	},
-
 	{
 		"name": "earthquakeAudio",
 		"type": "audio",

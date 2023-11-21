@@ -2,6 +2,7 @@ import Experience from 'webgl/Experience.js'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import addMeshDebug from 'utils/addMeshDebug.js'
+import Joconde from 'components/Joconde.js'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -20,13 +21,10 @@ export default class SceneComponent {
 			scene: 0,
 			sceneParams: [
 				{
-					cameraZPosition: 4,
-					paintZPosition: 0,
+					cameraZPosition: 13,
+					paintZPosition: -3.2,
 				},
-				{
-					cameraZPosition: -1,
-					paintZPosition: -5,
-				},
+				{ cameraZPosition: -3, paintZPosition: -16.2 },
 			],
 		}
 
@@ -40,7 +38,7 @@ export default class SceneComponent {
 		this.model.name = 'scene'
 		this.scene.add(this.model)
 
-		this.paint = this.model.getObjectByName('Paint')
+		this.paint = new Joconde()
 	}
 
 	setSection(sectionNumber, force = false) {
@@ -48,23 +46,22 @@ export default class SceneComponent {
 		const isReverse = this.options.scene >= sectionNumber
 		this.options.scene = sectionNumber
 
-		// gsap.to(this.paint.position, {
-		// 	z: this.options.sceneParams[sectionNumber].paintZPosition,
-		// })
-		gsap.to(this.camera.instance.position, {
+		gsap.to(this.paint.mesh.position, {
+			z: this.options.sceneParams[sectionNumber].paintZPosition,
+		})
+		gsap.to(this.camera.sceneCamera.position, {
 			z: this.options.sceneParams[sectionNumber].cameraZPosition,
 			delay: isReverse ? 0 : 0.25,
 		})
 
 		if (!isReverse) {
-			gsap.to(this.camera.options, {
+			gsap.to(this.camera.sceneCamera, {
 				keyframes: [
-					{ ease: 'power1.in', duration: 0.75, fov: 70 },
-					{ ease: 'power1.out', duration: 0.25, fov: 35 },
+					{ ease: 'power1.in', duration: 0.75, fov: 30 },
+					{ ease: 'power1.out', duration: 0.25, fov: this.camera.options.fov },
 				],
 				onUpdate: () => {
-					this.camera.instance.fov = this.camera.options.fov
-					this.camera.instance.updateProjectionMatrix()
+					this.camera.sceneCamera.updateProjectionMatrix()
 				},
 			})
 		}
