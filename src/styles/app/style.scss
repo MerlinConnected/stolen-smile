@@ -1,4 +1,15 @@
-.section0,
-.section1 {
+.section {
 	height: 200vh;
+
+	&-0 {
+		> div {
+			height: 100%;
+			h1 {
+				color: black;
+				font-size: 5rem;
+				position: sticky;
+				top: 0;
+			}
+		}
+	}
 }

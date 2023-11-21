@@ -76,7 +76,7 @@ export default class SceneComponent {
 
 		this.options.sceneParams.forEach((_, index) => {
 			ScrollTrigger.create({
-				trigger: `.section${index}`,
+				trigger: `.section-${index}`,
 				markers: true,
 				start: 'top top',
 				onToggle: (self) => {
