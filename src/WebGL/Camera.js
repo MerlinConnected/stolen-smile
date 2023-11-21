@@ -15,8 +15,8 @@ export default class Camera {
 			fov: 14,
 			near: 0.1,
 			far: 35,
-			position: new Vector3(0, 2, 13),
-			target: new Vector3(0, 2, 0),
+			position: new Vector3(0, 1.8, 13),
+			target: new Vector3(0, 1.8, 0),
 		}
 
 		this.mouse = new Vector2(0, 0)
