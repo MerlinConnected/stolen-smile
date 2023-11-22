@@ -44,29 +44,21 @@ export default class HtmlManager {
 		}
 	}
 
-	update() {
-		const { currentTime, totalTime, audioElement } = this.elements
-		if (audioElement.readyState >= 2) {
-			currentTime.innerHTML = this.formatTime(audioElement.currentTime)
-			totalTime.innerHTML = this.formatTime(audioElement.duration)
-		}
-	}
-
-	getCursorPosition(e) {
-		const percent = this.calculatePercent(e)
+	getCursorPosition(event) {
+		const percent = this.calculatePercent(event)
 		this.updateBarScale(percent)
 		this.elements.audioElement.currentTime = percent * this.elements.audioElement.duration
 	}
 
-	updateHoverPosition(e) {
-		const percent = this.calculatePercent(e)
+	updateHoverPosition(event) {
+		const percent = this.calculatePercent(event)
 		this.updateHoverWidth(percent)
 	}
 
-	calculatePercent(e) {
+	calculatePercent(event) {
 		const { player } = this.elements
 		const elementRect = player.getBoundingClientRect()
-		const x = e.pageX - elementRect.left
+		const x = event.pageX - elementRect.left
 		return x / player.offsetWidth
 	}
 
@@ -82,5 +74,13 @@ export default class HtmlManager {
 		const minutes = Math.floor(seconds / 60)
 		const remainingSeconds = Math.floor(seconds % 60)
 		return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
+	}
+
+	update() {
+		const { currentTime, totalTime, audioElement } = this.elements
+		if (audioElement.readyState >= 2) {
+			currentTime.innerHTML = this.formatTime(audioElement.currentTime)
+			totalTime.innerHTML = this.formatTime(audioElement.duration)
+		}
 	}
 }
