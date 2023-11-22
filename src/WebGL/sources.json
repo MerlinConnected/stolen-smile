@@ -9,10 +9,5 @@
 		"name": "louvreSceneModel",
 		"type": "gltf",
 		"path": "models/louvre/louvre.gltf"
-	},
-	{
-		"name": "earthquakeAudio",
-		"type": "audio",
-		"path": "audio/earthquake.mp3"
 	}
 ]

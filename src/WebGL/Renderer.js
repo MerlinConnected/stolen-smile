@@ -1,5 +1,5 @@
 import Experience from './Experience.js'
-import { WebGLRenderer } from 'three'
+import { WebGLRenderer, ACESFilmicToneMapping, CineonToneMapping } from 'three'
 import { EffectComposer, RenderPass, EffectPass, DepthOfFieldEffect } from 'postprocessing'
 
 export default class Renderer {
@@ -9,13 +9,15 @@ export default class Renderer {
 		this.sizes = this.experience.sizes
 		this.scene = this.experience.scene
 		this.camera = this.experience.camera
+		this.debug = this.experience.debug
 
 		this.options = {
-			postprocessing: false,
+			postprocessing: true,
 		}
 
 		this.setInstance()
 		this.setPostProcessing()
+		if (this.debug.active) this.setDebug()
 	}
 
 	setInstance() {
@@ -32,13 +34,30 @@ export default class Renderer {
 		const renderPass = new RenderPass(this.scene, this.camera.instance)
 		this.composer.addPass(renderPass)
 
-		const depthOfFieldEffect = new DepthOfFieldEffect(this.camera.instance, {
-			focusDistance: 0.45,
-			bokehScale: 10,
+		this.depthOfFieldEffect = new DepthOfFieldEffect(this.camera.instance, {
+			bokehScale: 5,
+			resolutionScale: 0.25,
 		})
 
-		const effectPass = new EffectPass(this.camera.instance, depthOfFieldEffect)
+		const effectPass = new EffectPass(this.camera.instance, this.depthOfFieldEffect)
 		this.composer.addPass(effectPass)
+	}
+
+	setDebug() {
+		this.debugFolder = this.debug.ui.addFolder({ title: 'Postprocessing' })
+		this.debugFolder.addBinding(this.options, 'postprocessing', { label: 'active' })
+		this.debugFolder.addBinding(this.depthOfFieldEffect, 'bokehScale', {
+			label: 'bokehScale',
+			min: 0,
+			max: 10,
+			step: 0.1,
+		})
+		this.debugFolder.addBinding(this.depthOfFieldEffect.cocMaterial.uniforms.focusRange, 'value', {
+			label: 'focusRange',
+			min: 0,
+			max: 1,
+			step: 0.001,
+		})
 	}
 
 	resize() {

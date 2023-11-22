@@ -13,8 +13,8 @@ export default class Camera {
 
 		this.options = {
 			fov: 16,
-			near: 0.1,
-			far: 33,
+			near: 1,
+			far: 35,
 			position: new Vector3(0, 1.8, 13),
 			target: new Vector3(0, 1.8, 0),
 		}
@@ -97,6 +97,17 @@ export default class Camera {
 					this.experience.renderer.options.postprocessing = postprocessingState
 					this.cameraHelper.visible = false
 				}
+			})
+
+		this.debugFolder
+			.addBinding(this.instance, 'fov', {
+				label: 'fov',
+				min: 1,
+				max: 180,
+				step: 1,
+			})
+			.on('change', () => {
+				this.instance.updateProjectionMatrix()
 			})
 	}
 
