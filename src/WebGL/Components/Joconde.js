@@ -8,6 +8,7 @@ export default class Joconde {
 		this.scene = this.experience.scene
 		this.resources = this.experience.resources
 		this.debug = this.experience.debug
+		this.renderer = this.experience.renderer
 
 		this.setGeometry()
 		this.setMaterial()
@@ -31,6 +32,7 @@ export default class Joconde {
 		this.mesh.rotation.set(0.03, 0, 0)
 		this.mesh.name = 'joconde'
 		this.scene.add(this.mesh)
+		this.renderer.depthOfFieldEffect.target = this.mesh.position
 	}
 
 	setDebug() {

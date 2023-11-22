@@ -98,6 +98,17 @@ export default class Camera {
 					this.cameraHelper.visible = false
 				}
 			})
+
+		this.debugFolder
+			.addBinding(this.instance, 'fov', {
+				label: 'fov',
+				min: 1,
+				max: 180,
+				step: 1,
+			})
+			.on('change', () => {
+				this.instance.updateProjectionMatrix()
+			})
 	}
 
 	update() {
