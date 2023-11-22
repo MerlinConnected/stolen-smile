@@ -6,6 +6,11 @@ h1 {
 	font-family: Ogg;
 }
 
+button {
+	font-size: 1rem;
+	text-transform: uppercase;
+}
+
 .title-container {
 	display: flex;
 	flex-direction: column;
@@ -17,19 +22,14 @@ h1 {
 
 	position: fixed;
 
-	padding-top: 10rem;
+	padding-top: 6rem;
 
 	pointer-events: none;
 	p {
 		font-family: Manrope;
 		text-align: center;
 		text-transform: uppercase;
-
-		font-size: 0.8rem;
-	}
-	h1 {
-		font-size: 3rem;
-		text-align: center;
+		font-size: 1rem;
 	}
 	button {
 		pointer-events: all;
@@ -37,6 +37,7 @@ h1 {
 }
 .player-container {
 	position: fixed;
+
 	height: 5px;
 	width: 80vw;
 
@@ -44,27 +45,30 @@ h1 {
 	bottom: 15px;
 	.player {
 		height: 5px;
+
 		background-color: rgb(110, 110, 110);
 
 		position: relative;
-
 		.player-bar {
-			background-color: rgb(41, 41, 41);
+			position: absolute;
+
 			height: 100%;
 			width: 0px;
 
-			position: absolute;
+			background-color: rgb(41, 41, 41);
 		}
 
 		.hover-bar {
-			background-color: rgb(255, 255, 255);
+			position: absolute;
+
 			opacity: 0;
+
 			height: 100%;
 			width: 0px;
 
-			position: absolute;
-
 			z-index: 1;
+
+			background-color: rgb(255, 255, 255);
 		}
 
 		&:hover {
@@ -73,4 +77,11 @@ h1 {
 			}
 		}
 	}
+}
+
+.audio-container {
+	position: fixed;
+
+	top: 2rem;
+	right: 2rem;
 }
