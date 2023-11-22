@@ -6,14 +6,9 @@
 		"path": "textures/joconde.webp"
 	},
 	{
-		"name": "testSceneModel",
-		"type": "gltf",
-		"path": "models/test_scene.glb"
-	},
-	{
 		"name": "louvreSceneModel",
 		"type": "gltf",
-		"path": "models/louvre.glb"
+		"path": "models/louvre/louvre.gltf"
 	},
 	{
 		"name": "earthquakeAudio",

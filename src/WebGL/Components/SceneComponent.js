@@ -19,15 +19,17 @@ export default class SceneComponent {
 			sceneParams: [
 				{
 					cameraZPosition: 13,
-					paintZPosition: -3.2,
+					paintZPosition: -3.25,
 				},
-				{ cameraZPosition: -3, paintZPosition: -19.2 },
+				{ cameraZPosition: -3, paintZPosition: -19.25 },
+				{ cameraZPosition: -19, paintZPosition: -35.25 },
 			],
 		}
 
 		this.paint = new Joconde()
 		this.setLouvreModel()
 		this.setRoomModel()
+		this.setShopModel()
 		this.setAnimation()
 		if (this.debug.active) this.setDebug()
 	}
@@ -43,6 +45,13 @@ export default class SceneComponent {
 		this.roomModel.position.z = -16
 		this.roomModel.name = 'roomScene'
 		this.scene.add(this.roomModel)
+	}
+
+	setShopModel() {
+		this.shopModel = this.resources.items.louvreSceneModel.scene.clone()
+		this.shopModel.position.z = -32
+		this.shopModel.name = 'shopScene'
+		this.scene.add(this.shopModel)
 	}
 
 	setSection(sectionNumber, force = false) {
