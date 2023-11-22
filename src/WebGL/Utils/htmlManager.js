@@ -8,6 +8,9 @@ export default class HtmlManager {
 		this.bar = document.querySelector('.player-bar')
 		this.hover = document.querySelector('.hover-bar')
 
+		this.currentTime = document.querySelector('.current-time')
+		this.totalTime = document.querySelector('.total-time')
+
 		this.audioElement = document.querySelector('audio')
 		this.trackElement = document.querySelector('track')
 		this.playButton = document.querySelector('#start')
@@ -24,7 +27,7 @@ export default class HtmlManager {
 		// Update progress bar
 		this.audioElement.addEventListener('timeupdate', () => {
 			const percent = this.audioElement.currentTime / this.audioElement.duration
-			this.updateBarWidth(percent * this.player.offsetWidth)
+			this.updateBarScale(percent)
 		})
 
 		// Display subtitles
@@ -41,15 +44,22 @@ export default class HtmlManager {
 		this.player.addEventListener('mousemove', this.handleMouseHover)
 	}
 
+	update() {
+		if (this.audioElement.readyState >= 2) {
+			this.currentTime.innerHTML = this.formatTime(this.audioElement.currentTime)
+			this.totalTime.innerHTML = this.formatTime(this.audioElement.duration)
+		}
+	}
+
 	getCursorPosition(e) {
 		const percent = this.calculatePercent(e)
-		this.updateBarWidth(percent * this.player.offsetWidth)
+		this.updateBarScale(percent)
 		this.audioElement.currentTime = percent * this.audioElement.duration
 	}
 
 	updateHoverPosition(e) {
 		const percent = this.calculatePercent(e)
-		this.updateHoverWidth(percent * this.player.offsetWidth)
+		this.updateHoverWidth(percent)
 	}
 
 	calculatePercent(e) {
@@ -59,11 +69,21 @@ export default class HtmlManager {
 		return x / width
 	}
 
-	updateBarWidth(newWidth) {
-		this.bar.style.width = `${newWidth}px`
+	updateBarScale(newWidth) {
+		this.bar.style.setProperty('--progress', newWidth)
 	}
 
 	updateHoverWidth(newWidth) {
-		this.hover.style.width = `${newWidth}px`
+		this.hover.style.transform = `scaleX(${newWidth})`
+	}
+
+	formatTime(seconds) {
+		const minutes = Math.floor(seconds / 60)
+		const remainingSeconds = Math.floor(seconds % 60)
+
+		const formattedMinutes = minutes.toString().padStart(2, '0')
+		const formattedSeconds = remainingSeconds.toString().padStart(2, '0')
+
+		return `${formattedMinutes}:${formattedSeconds}`
 	}
 }

@@ -8,7 +8,7 @@ import SceneManager from 'utils/SceneManager.js'
 import sources from './sources.json'
 import { Mesh, Scene } from 'three'
 import AudioManager from 'utils/AudioManager.js'
-import HtmlManager from './Utils/htmlManager.js'
+import HtmlManager from 'utils/HtmlManager.js'
 
 let instance = null
 
@@ -58,6 +58,7 @@ export default class Experience {
 		this.camera.update()
 		this.activeScene.update()
 		this.renderer.update()
+		this.htmlManager.update()
 		this.debug.update()
 	}
 
