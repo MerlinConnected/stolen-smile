@@ -16,6 +16,7 @@ export default class SceneComponent {
 
 		this.options = {
 			scene: 0,
+			isChanging: false,
 			sceneParams: [
 				{
 					cameraZPosition: 13,
@@ -61,11 +62,19 @@ export default class SceneComponent {
 
 		gsap.to(this.paint.mesh.position, {
 			z: this.options.sceneParams[sectionNumber].paintZPosition,
-			ease: 'power4.inOut',
+			ease: this.options.isChanging ? 'power4.out' : 'power4.inOut',
+			overwrite: 'auto',
 		})
 		gsap.to(this.camera.sceneCamera.position, {
 			z: this.options.sceneParams[sectionNumber].cameraZPosition,
-			ease: 'power2.inOut',
+			ease: this.options.isChanging ? 'power2.out' : 'power2.inOut',
+			overwrite: 'auto',
+			onStart: () => {
+				this.options.isChanging = true
+			},
+			onComplete: () => {
+				this.options.isChanging = false
+			},
 		})
 
 		// if (!isReverse) {
@@ -88,7 +97,6 @@ export default class SceneComponent {
 		this.options.sceneParams.forEach((_, index) => {
 			ScrollTrigger.create({
 				trigger: `.section-${index}`,
-				markers: false,
 				start: 'top top',
 				onToggle: (self) => {
 					if (!self.isActive) return
