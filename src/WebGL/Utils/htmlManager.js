@@ -1,20 +1,46 @@
+import Experience from '../Experience'
+
 export default class HtmlManager {
 	constructor() {
+		this.experience = new Experience()
+
 		this.player = document.querySelector('.player')
-
 		this.bar = document.querySelector('.player-bar')
+		this.hover = document.querySelector('.hover-bar')
 
-		this.player.addEventListener('click', this.getClickPosition.bind(this))
+		this.handleMouseClick = this.getCursorPosition.bind(this)
+		this.handleMouseHover = this.updateHoverPosition.bind(this)
+
+		this.player.addEventListener('click', this.handleMouseClick)
+		this.player.addEventListener('mousemove', this.handleMouseHover)
 	}
 
-	getClickPosition(e) {
+	update() {}
+
+	getCursorPosition(e) {
+		const percent = this.calculatePercent(e)
+		// console.log('Click - Percent:', percent)
+		this.updateBarWidth(percent * this.player.offsetWidth)
+	}
+
+	updateHoverPosition(e) {
+		const percent = this.calculatePercent(e)
+		// console.log('Hover - Percent:', percent)
+		this.updateHoverWidth(percent * this.player.offsetWidth)
+	}
+
+	calculatePercent(e) {
 		const elementRect = this.player.getBoundingClientRect()
-		var x = e.pageX - elementRect.left,
-			width = this.player.offsetWidth,
-			percent = x / width
+		const x = e.pageX - elementRect.left
+		const width = this.player.offsetWidth
+		return x / width
+	}
 
-		console.log('X', x, 'Width', width, 'Percent', percent)
+	updateBarWidth(newWidth) {
+		this.bar.style.width = `${newWidth}px`
+	}
 
-		this.bar.style.width = percent * width + 'px'
+	updateHoverWidth(newWidth) {
+		this.hover.style.width = `${newWidth}px`
 	}
 }
