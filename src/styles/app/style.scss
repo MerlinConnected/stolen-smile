@@ -9,6 +9,8 @@ h1 {
 .title-container {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	gap: 2rem;
 
 	width: 100%;
@@ -28,6 +30,9 @@ h1 {
 	h1 {
 		font-size: 3rem;
 		text-align: center;
+	}
+	button {
+		pointer-events: all;
 	}
 }
 .player-container {

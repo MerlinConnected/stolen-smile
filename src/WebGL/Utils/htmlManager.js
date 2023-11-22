@@ -8,6 +8,32 @@ export default class HtmlManager {
 		this.bar = document.querySelector('.player-bar')
 		this.hover = document.querySelector('.hover-bar')
 
+		this.audioElement = document.querySelector('audio')
+		this.trackElement = document.querySelector('track')
+		this.playButton = document.querySelector('#start')
+
+		// Play/Pause
+		this.playButton.addEventListener('click', () => {
+			if (this.audioElement.paused) {
+				this.audioElement.play()
+			} else {
+				this.audioElement.pause()
+			}
+		})
+
+		// Update progress bar
+		this.audioElement.addEventListener('timeupdate', () => {
+			const percent = this.audioElement.currentTime / this.audioElement.duration
+			this.updateBarWidth(percent * this.player.offsetWidth)
+		})
+
+		// Display subtitles
+		this.trackElement.addEventListener('cuechange', () => {
+			if (this.trackElement.track.activeCues[0]) {
+				console.log(this.trackElement.track.activeCues[0].text)
+			}
+		})
+
 		this.handleMouseClick = this.getCursorPosition.bind(this)
 		this.handleMouseHover = this.updateHoverPosition.bind(this)
 
@@ -15,17 +41,14 @@ export default class HtmlManager {
 		this.player.addEventListener('mousemove', this.handleMouseHover)
 	}
 
-	update() {}
-
 	getCursorPosition(e) {
 		const percent = this.calculatePercent(e)
-		// console.log('Click - Percent:', percent)
 		this.updateBarWidth(percent * this.player.offsetWidth)
+		this.audioElement.currentTime = percent * this.audioElement.duration
 	}
 
 	updateHoverPosition(e) {
 		const percent = this.calculatePercent(e)
-		// console.log('Hover - Percent:', percent)
 		this.updateHoverWidth(percent * this.player.offsetWidth)
 	}
 
