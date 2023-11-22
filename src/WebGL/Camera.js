@@ -13,8 +13,8 @@ export default class Camera {
 
 		this.options = {
 			fov: 16,
-			near: 0.1,
-			far: 33,
+			near: 1,
+			far: 35,
 			position: new Vector3(0, 1.8, 13),
 			target: new Vector3(0, 1.8, 0),
 		}
