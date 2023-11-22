@@ -9,5 +9,15 @@
 		"name": "louvreSceneModel",
 		"type": "gltf",
 		"path": "models/louvre/louvre.gltf"
+	},
+	{
+		"name": "vignetteMaskTexture",
+		"type": "texture",
+		"path": "textures/vignette_mask.webp"
+	},
+	{
+		"name": "paperTexture",
+		"type": "texture",
+		"path": "textures/paper.webp"
 	}
 ]

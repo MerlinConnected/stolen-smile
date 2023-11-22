@@ -1,6 +1,7 @@
 import Experience from './Experience.js'
-import { WebGLRenderer, ACESFilmicToneMapping, CineonToneMapping } from 'three'
-import { EffectComposer, RenderPass, EffectPass, DepthOfFieldEffect } from 'postprocessing'
+import { WebGLRenderer } from 'three'
+import { EffectComposer, RenderPass, EffectPass, DepthOfFieldEffect, BloomEffect } from 'postprocessing'
+import { Vignette } from 'webgl/PostProcessing/vignette/index.js'
 
 export default class Renderer {
 	constructor() {
@@ -25,6 +26,7 @@ export default class Renderer {
 			canvas: this.canvas,
 			powerPreference: 'high-performance',
 		})
+		this.instance.setClearColor(0xefcb99)
 		this.instance.setSize(this.sizes.width, this.sizes.height)
 		this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
 	}
@@ -39,7 +41,9 @@ export default class Renderer {
 			resolutionScale: 0.25,
 		})
 
-		const effectPass = new EffectPass(this.camera.instance, this.depthOfFieldEffect)
+		this.vignetteEffect = new Vignette()
+
+		const effectPass = new EffectPass(this.camera.instance, this.depthOfFieldEffect, this.vignetteEffect)
 		this.composer.addPass(effectPass)
 	}
 
@@ -54,6 +58,12 @@ export default class Renderer {
 		})
 		this.debugFolder.addBinding(this.depthOfFieldEffect.cocMaterial.uniforms.focusRange, 'value', {
 			label: 'focusRange',
+			min: 0,
+			max: 1,
+			step: 0.001,
+		})
+		this.debugFolder.addBinding(this.vignetteEffect.uniforms.get('opacity'), 'value', {
+			label: 'vignetteOpacity',
 			min: 0,
 			max: 1,
 			step: 0.001,
