@@ -30,35 +30,42 @@ h1 {
 		text-align: center;
 	}
 }
-
-.player {
+.player-container {
+	position: fixed;
 	height: 5px;
-	background-color: rgb(110, 110, 110);
+	width: 80vw;
 
-	position: relative;
+	left: 10vw;
+	bottom: 15px;
+	.player {
+		height: 5px;
+		background-color: rgb(110, 110, 110);
 
-	.player-bar {
-		background-color: rgb(41, 41, 41);
-		height: 100%;
-		width: 0px;
+		position: relative;
 
-		position: absolute;
-	}
+		.player-bar {
+			background-color: rgb(41, 41, 41);
+			height: 100%;
+			width: 0px;
 
-	.hover-bar {
-		background-color: rgb(255, 255, 255);
-		opacity: 0;
-		height: 100%;
-		width: 0px;
+			position: absolute;
+		}
 
-		position: absolute;
-
-		z-index: 1;
-	}
-
-	&:hover {
 		.hover-bar {
-			opacity: 50%;
+			background-color: rgb(255, 255, 255);
+			opacity: 0;
+			height: 100%;
+			width: 0px;
+
+			position: absolute;
+
+			z-index: 1;
+		}
+
+		&:hover {
+			.hover-bar {
+				opacity: 20%;
+			}
 		}
 	}
 }

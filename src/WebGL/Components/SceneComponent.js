@@ -79,7 +79,7 @@ export default class SceneComponent {
 		this.options.sceneParams.forEach((_, index) => {
 			ScrollTrigger.create({
 				trigger: `.section-${index}`,
-				markers: true,
+				markers: false,
 				start: 'top top',
 				onToggle: (self) => {
 					if (!self.isActive) return
