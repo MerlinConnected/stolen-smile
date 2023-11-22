@@ -12,9 +12,8 @@ export default class AudioManager {
 
 		this.setCameraListener()
 		this.resources.on('ready', () => {
-			this.sounds = [
-				{
-					name: 'earthquake',
+			this.sounds = {
+				earthquake: {
 					buffer: this.resources.items.earthquakeAudio,
 					position: new Vector3(1, 0, 0),
 					loop: false,
@@ -22,7 +21,7 @@ export default class AudioManager {
 					volume: 1,
 					autoplay: false,
 				},
-			]
+			}
 			this.setSounds()
 			if (this.debug.active) this.setDebug()
 		})
@@ -30,11 +29,12 @@ export default class AudioManager {
 
 	setCameraListener() {
 		this.audioListener = new AudioListener()
-		this.camera.instance.add(this.audioListener)
+		this.camera.sceneCamera.add(this.audioListener)
 	}
 
 	setSounds() {
-		this.sounds.forEach((sound) => {
+		Object.keys(this.sounds).forEach((key) => {
+			const sound = this.sounds[key]
 			sound.instance = new PositionalAudio(this.audioListener)
 			sound.instance.setBuffer(sound.buffer)
 			sound.instance.setRefDistance(sound.refDistance || 20)
@@ -44,7 +44,7 @@ export default class AudioManager {
 			sound.mesh = new Mesh()
 			sound.mesh.add(sound.instance)
 			sound.mesh.position.copy(sound.position)
-			sound.mesh.name = sound.name
+			sound.mesh.name = key
 			this.scene.add(sound.mesh)
 		})
 	}
@@ -60,7 +60,8 @@ export default class AudioManager {
 				}),
 			})
 			.on('click', (event) => {
-				this.sounds.forEach((sound) => {
+				Object.keys(this.sounds).forEach((key) => {
+					const sound = this.sounds[key]
 					if (event.index[0] === 0) {
 						sound.instance.play()
 					} else {
@@ -74,7 +75,8 @@ export default class AudioManager {
 				label: 'transform control',
 			})
 			.on('change', ({ value }) => {
-				this.sounds.forEach((sound) => {
+				Object.keys(this.sounds).forEach((key) => {
+					const sound = this.sounds[key]
 					if (value) {
 						sound.transform = new TransformControls(this.camera.instance, this.experience.canvas)
 						sound.transform.addEventListener('change', () => {
@@ -103,8 +105,9 @@ export default class AudioManager {
 				})
 			})
 
-		this.sounds.forEach((sound, index) => {
-			const soundFolder = this.debugFolder.addFolder({ title: sound.name, expanded: false })
+		Object.keys(this.sounds).forEach((key) => {
+			const sound = this.sounds[key]
+			const soundFolder = this.debugFolder.addFolder({ title: key, expanded: false })
 			soundFolder
 				.addBlade({
 					view: 'buttongrid',
