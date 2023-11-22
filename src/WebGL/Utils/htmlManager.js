@@ -4,57 +4,58 @@ export default class HtmlManager {
 	constructor() {
 		this.experience = new Experience()
 
-		this.player = document.querySelector('.player')
-		this.bar = document.querySelector('.player-bar')
-		this.hover = document.querySelector('.hover-bar')
+		this.elements = {
+			player: document.querySelector('.player'),
+			bar: document.querySelector('.player-bar'),
+			hover: document.querySelector('.hover-bar'),
+			currentTime: document.querySelector('.current-time'),
+			totalTime: document.querySelector('.total-time'),
+			audioElement: document.querySelector('audio'),
+			trackElement: document.querySelector('track'),
+			playButton: document.querySelector('#start'),
+		}
 
-		this.currentTime = document.querySelector('.current-time')
-		this.totalTime = document.querySelector('.total-time')
+		this.setupEventListeners()
+	}
 
-		this.audioElement = document.querySelector('audio')
-		this.trackElement = document.querySelector('track')
-		this.playButton = document.querySelector('#start')
+	setupEventListeners() {
+		this.elements.playButton.addEventListener('click', this.togglePlayPause.bind(this))
+		this.elements.audioElement.addEventListener('timeupdate', this.updateProgressBar.bind(this))
+		this.elements.trackElement.addEventListener('cuechange', this.displaySubtitles.bind(this))
+		this.elements.player.addEventListener('click', this.getCursorPosition.bind(this))
+		this.elements.player.addEventListener('mousemove', this.updateHoverPosition.bind(this))
+	}
 
-		// Play/Pause
-		this.playButton.addEventListener('click', () => {
-			if (this.audioElement.paused) {
-				this.audioElement.play()
-			} else {
-				this.audioElement.pause()
-			}
-		})
+	togglePlayPause() {
+		const { audioElement } = this.elements
+		audioElement.paused ? audioElement.play() : audioElement.pause()
+	}
 
-		// Update progress bar
-		this.audioElement.addEventListener('timeupdate', () => {
-			const percent = this.audioElement.currentTime / this.audioElement.duration
-			this.updateBarScale(percent)
-		})
+	updateProgressBar() {
+		const { audioElement, bar } = this.elements
+		const percent = audioElement.currentTime / audioElement.duration
+		bar.style.setProperty('--progress', percent)
+	}
 
-		// Display subtitles
-		this.trackElement.addEventListener('cuechange', () => {
-			if (this.trackElement.track.activeCues[0]) {
-				console.log(this.trackElement.track.activeCues[0].text)
-			}
-		})
-
-		this.handleMouseClick = this.getCursorPosition.bind(this)
-		this.handleMouseHover = this.updateHoverPosition.bind(this)
-
-		this.player.addEventListener('click', this.handleMouseClick)
-		this.player.addEventListener('mousemove', this.handleMouseHover)
+	displaySubtitles() {
+		const activeCue = this.elements.trackElement.track.activeCues[0]
+		if (activeCue) {
+			console.log(activeCue.text)
+		}
 	}
 
 	update() {
-		if (this.audioElement.readyState >= 2) {
-			this.currentTime.innerHTML = this.formatTime(this.audioElement.currentTime)
-			this.totalTime.innerHTML = this.formatTime(this.audioElement.duration)
+		const { currentTime, totalTime, audioElement } = this.elements
+		if (audioElement.readyState >= 2) {
+			currentTime.innerHTML = this.formatTime(audioElement.currentTime)
+			totalTime.innerHTML = this.formatTime(audioElement.duration)
 		}
 	}
 
 	getCursorPosition(e) {
 		const percent = this.calculatePercent(e)
 		this.updateBarScale(percent)
-		this.audioElement.currentTime = percent * this.audioElement.duration
+		this.elements.audioElement.currentTime = percent * this.elements.audioElement.duration
 	}
 
 	updateHoverPosition(e) {
@@ -63,27 +64,23 @@ export default class HtmlManager {
 	}
 
 	calculatePercent(e) {
-		const elementRect = this.player.getBoundingClientRect()
+		const { player } = this.elements
+		const elementRect = player.getBoundingClientRect()
 		const x = e.pageX - elementRect.left
-		const width = this.player.offsetWidth
-		return x / width
+		return x / player.offsetWidth
 	}
 
-	updateBarScale(newWidth) {
-		this.bar.style.setProperty('--progress', newWidth)
+	updateBarScale(percent) {
+		this.elements.bar.style.setProperty('--progress', percent)
 	}
 
-	updateHoverWidth(newWidth) {
-		this.hover.style.transform = `scaleX(${newWidth})`
+	updateHoverWidth(percent) {
+		this.elements.hover.style.transform = `scaleX(${percent})`
 	}
 
 	formatTime(seconds) {
 		const minutes = Math.floor(seconds / 60)
 		const remainingSeconds = Math.floor(seconds % 60)
-
-		const formattedMinutes = minutes.toString().padStart(2, '0')
-		const formattedSeconds = remainingSeconds.toString().padStart(2, '0')
-
-		return `${formattedMinutes}:${formattedSeconds}`
+		return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
 	}
 }
