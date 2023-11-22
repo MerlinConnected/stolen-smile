@@ -12,7 +12,7 @@ export default class Renderer {
 		this.debug = this.experience.debug
 
 		this.options = {
-			postprocessing: false,
+			postprocessing: true,
 		}
 
 		this.setInstance()
@@ -36,6 +36,7 @@ export default class Renderer {
 
 		this.depthOfFieldEffect = new DepthOfFieldEffect(this.camera.instance, {
 			bokehScale: 5,
+			resolutionScale: 0.25,
 		})
 
 		const effectPass = new EffectPass(this.camera.instance, this.depthOfFieldEffect)
