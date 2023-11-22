@@ -16,7 +16,7 @@ export default class Joconde {
 	}
 
 	setGeometry() {
-		this.geometry = new PlaneGeometry(0.983, 1.43)
+		this.geometry = new PlaneGeometry(0.83, 1.24)
 	}
 
 	setMaterial() {
@@ -27,7 +27,8 @@ export default class Joconde {
 
 	setMesh() {
 		this.mesh = new Mesh(this.geometry, this.material)
-		this.mesh.position.set(0, 2, -3.2)
+		this.mesh.position.set(0, 2, -3.25)
+		this.mesh.rotation.set(0.03, 0, 0)
 		this.mesh.name = 'joconde'
 		this.scene.add(this.mesh)
 	}

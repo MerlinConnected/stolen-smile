@@ -12,9 +12,9 @@ export default class Camera {
 		this.debug = this.experience.debug
 
 		this.options = {
-			fov: 14,
+			fov: 16,
 			near: 0.1,
-			far: 35,
+			far: 33,
 			position: new Vector3(0, 1.8, 13),
 			target: new Vector3(0, 1.8, 0),
 		}
