@@ -23,6 +23,15 @@ export default class HtmlManager {
 		this.elements.audioElement.addEventListener('timeupdate', this.updateProgressBar.bind(this))
 		this.elements.trackElement.addEventListener('cuechange', this.displaySubtitles.bind(this))
 		this.elements.player.addEventListener('click', this.getCursorPosition.bind(this))
+		// handle mouse drag
+		let isMouseDown = false
+		this.elements.player.addEventListener('mousedown', () => (isMouseDown = true))
+		document.addEventListener('mouseup', () => (isMouseDown = false))
+		document.addEventListener('mousemove', (event) => {
+			if (isMouseDown) {
+				this.getCursorPosition(event)
+			}
+		})
 		this.elements.player.addEventListener('mousemove', this.updateHoverPosition.bind(this))
 	}
 
@@ -34,7 +43,7 @@ export default class HtmlManager {
 	updateProgressBar() {
 		const { audioElement, bar } = this.elements
 		const percent = audioElement.currentTime / audioElement.duration
-		bar.style.setProperty('--progress', percent)
+		bar.style.setProperty('--progress', percent.toString())
 	}
 
 	displaySubtitles() {
