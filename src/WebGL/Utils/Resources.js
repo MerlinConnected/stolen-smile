@@ -1,9 +1,10 @@
 import EventEmitter from './EventEmitter.js'
-import { AudioLoader, CubeTextureLoader, TextureLoader } from 'three'
+import { AudioLoader, CubeTextureLoader, MathUtils, TextureLoader } from 'three'
 import Experience from 'webgl/Experience.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { Texture, CubeTexture, Object3D } from 'three'
+import gsap from 'gsap'
 
 export default class Resources extends EventEmitter {
 	constructor(sources) {
@@ -20,6 +21,8 @@ export default class Resources extends EventEmitter {
 		this.items = {}
 		this.toLoad = this.sources.length
 		this.loaded = 0
+		this.progressValue = 0
+		this.targetProgressValue = 0
 
 		if (!this.debug.active || this.debug.debugParams.LoadingScreen) {
 			this.setLoadingScreen()
@@ -80,6 +83,20 @@ export default class Resources extends EventEmitter {
 					break
 			}
 		}
+		requestAnimationFrame(this.updateProgress.bind(this))
+	}
+
+	updateProgress() {
+		this.progressValue = Math.round(MathUtils.lerp(this.progressValue, this.targetProgressValue, 0.1))
+
+		const progress = this.progressValue.toString().padStart(3, '0')
+
+		this.loadingFirstCharactersElement.innerHTML = progress.slice(0, 2)
+		this.loadingSecondCharacterElement.innerHTML = progress.slice(2, 3)
+
+		if (this.progressValue < this.targetProgressValue || this.targetProgressValue === 0) {
+			requestAnimationFrame(this.updateProgress.bind(this))
+		}
 	}
 
 	sourceLoaded(source, file) {
@@ -93,14 +110,7 @@ export default class Resources extends EventEmitter {
 		if (this.debug.active && this.debug.debugParams.ResourceLog)
 			console.debug(`🖼️ ${source.name} loaded in ${source.loadTime}ms. (${this.loaded}/${this.toLoad})`)
 
-		if (this.loadingScreenElement) {
-			const progressNumber = (this.loaded / this.toLoad) * 100
-			const progress = '0' + progressNumber
-
-			this.loadingFirstCharactersElement.innerHTML = progress.slice(0, 2)
-			this.loadingSecondCharacterElement.innerHTML = progress.slice(2, 3)
-			this.loadingScreenElement.dataset.progress = progressNumber.toString()
-		}
+		this.targetProgressValue = (this.loaded / this.toLoad) * 100
 
 		if (this.loaded === this.toLoad) {
 			if (this.debug.active && this.debug.debugParams.ResourceLog) {
@@ -108,7 +118,15 @@ export default class Resources extends EventEmitter {
 				const totalLoadTime = totalEndTime - this.totalStartTime
 				console.debug(`✅ Resources loaded in ${totalLoadTime}ms!`)
 			}
-			if (this.loadingScreenElement) this.loadingScreenElement.remove()
+			if (this.loadingScreenElement) {
+				gsap.to(this.loadingScreenElement, {
+					duration: 1,
+					opacity: 0,
+					onComplete: () => {
+						this.loadingScreenElement.remove()
+					},
+				})
+			}
 			this.trigger('ready')
 		}
 	}
