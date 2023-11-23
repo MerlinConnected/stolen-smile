@@ -43,12 +43,6 @@ export default class Renderer {
 		})
 
 		this.vignetteEffect = new Vignette()
-		this.experience.resources.on('ready', () => {
-			gsap.to(this.vignetteEffect.uniforms.get('opacity'), {
-				duration: 2,
-				value: 0,
-			})
-		})
 
 		const effectPass = new EffectPass(this.camera.instance, this.depthOfFieldEffect, this.vignetteEffect)
 		this.composer.addPass(effectPass)

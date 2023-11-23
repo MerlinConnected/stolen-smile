@@ -24,8 +24,10 @@ export default class Resources extends EventEmitter {
 		this.progressValue = 0
 		this.targetProgressValue = 0
 
-		if (!this.debug.active || this.debug.debugParams.LoadingScreen) {
-			this.setLoadingScreen()
+		this.setLoadingScreen()
+		if (this.debug.active && !this.debug.debugParams.LoadingScreen) {
+			document.querySelector('.home').classList.add('home--loaded')
+			this.loadingScreenElement.remove()
 		}
 		this.setLoaders()
 		this.startLoading()
@@ -97,14 +99,10 @@ export default class Resources extends EventEmitter {
 		if (Math.round(this.progressValue) < 100) {
 			requestAnimationFrame(this.updateProgress.bind(this))
 		} else {
-			this.trigger('ready')
-			gsap.to(this.loadingScreenElement, {
-				duration: 0.5,
-				opacity: 0,
-				onComplete: () => {
-					this.loadingScreenElement.remove()
-				},
-			})
+			document.querySelector('.home').classList.add('home--loaded')
+			setTimeout(() => {
+				this.loadingScreenElement.remove()
+			}, 1000)
 		}
 	}
 
@@ -127,9 +125,7 @@ export default class Resources extends EventEmitter {
 				const totalLoadTime = totalEndTime - this.totalStartTime
 				console.debug(`✅ Resources loaded in ${totalLoadTime}ms!`)
 			}
-			if (this.loadingScreenElement) {
-			}
-			// this.trigger('ready')
+			this.trigger('ready')
 		}
 	}
 }

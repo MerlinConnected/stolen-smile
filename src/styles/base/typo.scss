@@ -1,6 +1,15 @@
 @font-face {
 	font-family: Ogg;
+	font-weight: 300;
+	font-style: italic;
 	src: url(https://cdn.storefront.production.sharptype.co/documents/Ogg-LightItalic.woff);
+}
+
+@font-face {
+	font-family: Ogg;
+	font-weight: 200;
+	font-style: italic;
+	src: url(https://cdn.storefront.production.sharptype.co/documents/Ogg-ThinItalic.woff);
 }
 
 @font-face {

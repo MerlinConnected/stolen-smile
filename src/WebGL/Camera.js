@@ -91,11 +91,13 @@ export default class Camera {
 					postprocessingState = this.experience.renderer.options.postprocessing
 					this.experience.renderer.options.postprocessing = false
 					this.cameraHelper.visible = true
+					this.experience.canvas.style.zIndex = '100'
 				} else {
 					this.controls.enabled = false
 					this.instance = this.sceneCamera
 					this.experience.renderer.options.postprocessing = postprocessingState
 					this.cameraHelper.visible = false
+					this.experience.canvas.style.zIndex = ''
 				}
 			})
 

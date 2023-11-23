@@ -1,6 +1,7 @@
 import Experience from 'webgl/Experience.js'
 import { AudioListener, Mesh, PositionalAudio, Vector3 } from 'three'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js'
+import { PositionalAudioHelper } from 'three/examples/jsm/helpers/PositionalAudioHelper.js'
 
 export default class AudioManager {
 	constructor() {
@@ -78,6 +79,8 @@ export default class AudioManager {
 				Object.keys(this.sounds).forEach((key) => {
 					const sound = this.sounds[key]
 					if (value) {
+						sound.helper = new PositionalAudioHelper(sound.instance, sound.refDistance)
+						sound.instance.add(sound.helper)
 						sound.transform = new TransformControls(this.camera.instance, this.experience.canvas)
 						sound.transform.addEventListener('change', () => {
 							sound.position.copy(sound.mesh.position)
@@ -98,6 +101,9 @@ export default class AudioManager {
 						sound.transform.attach(sound.mesh)
 						this.scene.add(sound.transform)
 					} else {
+						sound.helper.dispose()
+						sound.instance.remove(sound.helper)
+						delete sound.helper
 						sound.transform.dispose()
 						this.scene.remove(sound.transform)
 						delete sound.transform
@@ -130,6 +136,10 @@ export default class AudioManager {
 				.addBinding(sound, 'refDistance', { label: 'Ref Distance', min: 0, max: 100, step: 1 })
 				.on('change', () => {
 					sound.instance.setRefDistance(sound.refDistance)
+					if (sound.helper) {
+						sound.helper.range = sound.refDistance
+						sound.helper.update()
+					}
 				})
 			soundFolder.addBinding(sound, 'loop', { label: 'Loop' }).on('change', () => {
 				sound.instance.setLoop(sound.loop)
