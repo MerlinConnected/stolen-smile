@@ -54,22 +54,49 @@ export default class SceneComponent {
 					shader.fragmentShader = `
 						uniform float uProgress;
 						varying vec2 vUv;
+
+						float random (in vec2 st) {
+								return fract(sin(dot(st.xy, vec2(12.9898,78.233)))* 43758.5453123);
+						}
+
+						float noise (in vec2 st) {
+								vec2 i = floor(st);
+								vec2 f = fract(st);
+
+								// Four corners in 2D of a tile
+								float a = random(i);
+								float b = random(i + vec2(1.0, 0.0));
+								float c = random(i + vec2(0.0, 1.0));
+								float d = random(i + vec2(1.0, 1.0));
+
+								// Smooth Interpolation
+
+								// Cubic Hermine Curve.  Same as SmoothStep()
+								vec2 u = f*f*(3.0-2.0*f);
+								// u = smoothstep(0.,1.,f);
+
+								// Mix 4 coorners percentages
+								return mix(a, b, u.x) +
+												(c - a)* u.y * (1.0 - u.x) +
+												(d - b) * u.x * u.y;
+						}
 						${shader.fragmentShader}
 					`
-					console.log(shader.fragmentShader)
 					shader.fragmentShader = shader.fragmentShader.replace(
 						`#include <dithering_fragment>`,
 						`#include <dithering_fragment>
+
 						float distance = distance(vUv, vec2(0.4, 0.42));
 
-						float alpha = smoothstep(uProgress, uProgress + 0.1, distance);
-						vec4 placeholderColor = vec4(vec3(0.95, 0.81, 0.62), 1.0);
+						float alpha = smoothstep(uProgress, uProgress + noise(vUv *50.) * 0.1, distance );
+
+						vec4 placeholderColor = vec4(0.95, 0.81, 0.62, 1.);
 						vec4 color = mix(gl_FragColor, placeholderColor, alpha);
 						gl_FragColor = vec4(color.rgb, 1.0);
 					`,
 					)
 					this.fragmentUniforms = shader.uniforms
-					this.fragmentUniforms.uProgress = { value: 1 }
+					this.fragmentUniforms.uProgress = { value: 0 }
 
 					const vertexShader = shader.vertexShader
 					shader.vertexShader = `
@@ -109,6 +136,14 @@ export default class SceneComponent {
 				const progress = paintTween.progress()
 				if (progress > 0.6) {
 					this.options.isChanging = false
+					if (sectionNumber === 1) {
+						gsap.to(this.fragmentUniforms.uProgress, {
+							value: 0.8,
+							duration: 30,
+							ease: 'power4.out',
+							overwrite: true,
+						})
+					}
 				}
 			},
 			onStart: () => {
@@ -120,19 +155,6 @@ export default class SceneComponent {
 			ease: this.options.isChanging ? 'power2.out' : 'power2.inOut',
 			overwrite: 'auto',
 		})
-
-		if (sectionNumber === 1) {
-			this.fragmentUniforms.uProgress.value = 0
-			gsap.to(this.fragmentUniforms.uProgress, {
-				value: 0.6,
-				duration: 10,
-				ease: 'power4.out',
-				overwrite: true,
-				onUpdate: () => {
-					console.log(this.fragmentUniforms.uProgress.value)
-				},
-			})
-		}
 
 		// if (!isReverse) {
 		// 	gsap.to(this.camera.sceneCamera, {
