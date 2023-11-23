@@ -17,9 +17,6 @@ button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 2.25rem;
-	font-family: $font-cursive;
-	font-style: italic;
 
 	img {
 		width: 100%;
@@ -28,11 +25,27 @@ button {
 		z-index: -1;
 	}
 
+	&__values {
+		font-size: 2.25rem;
+		font-family: $font-cursive;
+		font-style: italic;
+	}
+
 	&__separator {
 		font-size: 6rem;
 		line-height: 11.4%;
 		height: 2rem;
 		vertical-align: middle;
+	}
+
+	&__info {
+		font-family: $font-serif;
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		align-items: center;
+		position: absolute;
+		bottom: 5rem;
 	}
 }
 
