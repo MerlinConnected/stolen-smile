@@ -3,7 +3,7 @@ import { AudioLoader, CubeTextureLoader, TextureLoader } from 'three'
 import Experience from 'webgl/Experience.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
-import { Texture, CubeTexture, Object3D } from 'three'
+import { Texture, CubeTexture, Object3D, MathUtils } from 'three'
 
 export default class Resources extends EventEmitter {
 	constructor(sources) {
@@ -29,33 +29,9 @@ export default class Resources extends EventEmitter {
 	}
 
 	setLoadingScreen() {
-		const loadingScreenStyles = {
-			position: 'fixed',
-			top: 0,
-			left: 0,
-			width: '100%',
-			height: '100%',
-			background: '#000',
-			zIndex: 100,
-		}
-		const loadingBarStyles = {
-			position: 'fixed',
-			top: '50%',
-			left: '25%',
-			width: '50%',
-			margin: 'auto',
-			height: '2px',
-			background: 'white',
-			zIndex: 100,
-			transformOrigin: 'left',
-			transform: 'scaleX(0)',
-		}
-		this.loadingScreenElement = document.createElement('div')
-		Object.assign(this.loadingScreenElement.style, loadingScreenStyles)
-		this.loadingBarElement = document.createElement('div')
-		Object.assign(this.loadingBarElement.style, loadingBarStyles)
-		this.loadingScreenElement.appendChild(this.loadingBarElement)
-		document.body.appendChild(this.loadingScreenElement)
+		this.loadingScreenElement = document.querySelector('.loading')
+		this.loadingFirstCharactersElement = document.querySelector('.loading__first-character')
+		this.loadingSecondCharacterElement = document.querySelector('.loading__second-character')
 	}
 
 	setLoaders() {
@@ -118,7 +94,13 @@ export default class Resources extends EventEmitter {
 			console.debug(`🖼️ ${source.name} loaded in ${source.loadTime}ms. (${this.loaded}/${this.toLoad})`)
 
 		if (this.loadingScreenElement) {
-			this.loadingBarElement.style.transform = `scaleX(${this.loaded / this.toLoad})`
+			//lerp value
+			const progressNumber = (this.loaded / this.toLoad) * 100
+			const progress = '0' + progressNumber
+
+			this.loadingFirstCharactersElement.innerHTML = progress.slice(0, 2)
+			this.loadingSecondCharacterElement.innerHTML = progress.slice(2, 3)
+			this.loadingScreenElement.dataset.progress = progressNumber.toString()
 		}
 
 		if (this.loaded === this.toLoad) {
