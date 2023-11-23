@@ -14,6 +14,7 @@ export default class Debug {
 			const uiContainer = this.ui.containerElem_
 			const uiBindContainer = uiContainer.querySelector("[style='height: auto;']")
 			uiContainer.style.position = 'fixed'
+			uiContainer.style.zIndex = '1000'
 			uiBindContainer.style.maxHeight = '80vh'
 			uiBindContainer.style.overflowY = 'auto'
 

@@ -47,14 +47,18 @@ export default class HtmlManager {
 	}
 
 	beginExperience() {
+		let debug = false
+		if (this.experience.debug.active && !this.experience.debug.debugParams.LoadingScreen) {
+			debug = true
+		}
 		gsap.to(this.experience.renderer.vignetteEffect.uniforms.get('opacity'), {
-			duration: 1,
+			duration: debug ? 0 : 1,
 			delay: 0.5,
 			value: 0,
 		})
 
 		gsap.to('.content-container', {
-			duration: 1,
+			duration: debug ? 0 : 1,
 			opacity: 0,
 		})
 	}
