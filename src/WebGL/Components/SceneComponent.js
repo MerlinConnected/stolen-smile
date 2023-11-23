@@ -60,21 +60,26 @@ export default class SceneComponent {
 		const isReverse = this.options.scene >= sectionNumber
 		this.options.scene = sectionNumber
 
-		gsap.to(this.paint.mesh.position, {
+		const paintTween = gsap.to(this.paint.mesh.position, {
 			z: this.options.sceneParams[sectionNumber].paintZPosition,
 			ease: this.options.isChanging ? 'power4.out' : 'power4.inOut',
 			overwrite: 'auto',
+			onUpdate: () => {
+				if (!this.options.isChanging) return
+				const progress = paintTween.progress()
+				if (progress > 0.6) {
+					console.log('end')
+					this.options.isChanging = false
+				}
+			},
+			onStart: () => {
+				this.options.isChanging = true
+			},
 		})
 		gsap.to(this.camera.sceneCamera.position, {
 			z: this.options.sceneParams[sectionNumber].cameraZPosition,
 			ease: this.options.isChanging ? 'power2.out' : 'power2.inOut',
 			overwrite: 'auto',
-			onStart: () => {
-				this.options.isChanging = true
-			},
-			onComplete: () => {
-				this.options.isChanging = false
-			},
 		})
 
 		// if (!isReverse) {
