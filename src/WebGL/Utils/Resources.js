@@ -25,10 +25,6 @@ export default class Resources extends EventEmitter {
 		this.targetProgressValue = 0
 
 		this.setLoadingScreen()
-		if (this.debug.active && !this.debug.debugParams.LoadingScreen) {
-			document.querySelector('.home').classList.add('home--loaded')
-			this.loadingScreenElement.remove()
-		}
 		this.setLoaders()
 		this.startLoading()
 	}

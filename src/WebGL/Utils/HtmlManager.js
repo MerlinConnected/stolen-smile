@@ -25,7 +25,7 @@ export default class HtmlManager {
 	setupEventListeners() {
 		this.elements.audioElement.addEventListener('timeupdate', this.updateProgressBar.bind(this))
 		this.elements.trackElement.addEventListener('cuechange', this.displaySubtitles.bind(this))
-		this.elements.playButton.addEventListener('click', this.togglePlayPause.bind(this))
+		this.elements.playButton.addEventListener('click', this.beginExperience.bind(this))
 		this.elements.player.addEventListener('click', this.getCursorPosition.bind(this))
 		// handle mouse drag
 		let isMouseDown = false
@@ -47,18 +47,14 @@ export default class HtmlManager {
 	}
 
 	beginExperience() {
-		let debug = false
-		if (this.experience.debug.active && !this.experience.debug.debugParams.LoadingScreen) {
-			debug = true
-		}
 		gsap.to(this.experience.renderer.vignetteEffect.uniforms.get('opacity'), {
-			duration: debug ? 0 : 1,
+			duration: 1,
 			delay: 0.5,
 			value: 0,
 		})
 
 		gsap.to('.content-container', {
-			duration: debug ? 0 : 1,
+			duration: 1,
 			opacity: 0,
 		})
 	}
