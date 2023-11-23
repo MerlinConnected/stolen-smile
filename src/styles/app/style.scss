@@ -272,10 +272,23 @@ button {
 	z-index: 1;
 	padding: 20px 2rem;
 	position: relative;
+
 	svg {
 		z-index: -1;
 		position: absolute;
 		top: 0;
 		left: 0;
+		overflow: visible;
+	}
+	path {
+		transition: all 0.5s ease-in-out;
+		transform-origin: center;
+	}
+
+	&:hover {
+		path:nth-of-type(2) {
+			transform: scale(1.04);
+			opacity: 0;
+		}
 	}
 }
