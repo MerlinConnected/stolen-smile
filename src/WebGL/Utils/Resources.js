@@ -97,14 +97,11 @@ export default class Resources extends EventEmitter {
 		if (Math.round(this.progressValue) < 100) {
 			requestAnimationFrame(this.updateProgress.bind(this))
 		} else {
-			this.trigger('ready')
-			gsap.to(this.loadingScreenElement, {
-				duration: 0.5,
-				opacity: 0,
-				onComplete: () => {
-					this.loadingScreenElement.remove()
-				},
-			})
+			// this.trigger('ready')
+			document.querySelector('.home').classList.add('home--loaded')
+			setTimeout(() => {
+				this.loadingScreenElement.remove()
+			}, 1000)
 		}
 	}
 
@@ -129,7 +126,7 @@ export default class Resources extends EventEmitter {
 			}
 			if (this.loadingScreenElement) {
 			}
-			// this.trigger('ready')
+			this.trigger('ready')
 		}
 	}
 }

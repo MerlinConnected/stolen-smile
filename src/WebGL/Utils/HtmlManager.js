@@ -1,4 +1,5 @@
 import Experience from '../Experience'
+import gsap from 'gsap'
 
 export default class HtmlManager {
 	constructor() {
@@ -18,10 +19,11 @@ export default class HtmlManager {
 		}
 
 		this.setupEventListeners()
+		this.updateProgressBar()
 	}
 
 	setupEventListeners() {
-		this.elements.playButton.addEventListener('click', this.togglePlayPause.bind(this))
+		this.elements.playButton.addEventListener('click', this.beginExperience.bind(this))
 		this.elements.audioElement.addEventListener('timeupdate', this.updateProgressBar.bind(this))
 		this.elements.trackElement.addEventListener('cuechange', this.displaySubtitles.bind(this))
 		this.elements.player.addEventListener('click', this.getCursorPosition.bind(this))
@@ -44,10 +46,26 @@ export default class HtmlManager {
 		audioElement.paused ? audioElement.play() : audioElement.pause()
 	}
 
+	beginExperience() {
+		gsap.to(this.experience.renderer.vignetteEffect.uniforms.get('opacity'), {
+			duration: 1,
+			delay: 0.5,
+			value: 0,
+		})
+
+		gsap.to('.content-container', {
+			duration: 1,
+			opacity: 0,
+		})
+	}
+
 	updateProgressBar() {
-		const { audioElement, bar } = this.elements
+		const { audioElement, bar, currentTime, totalTime } = this.elements
 		const percent = audioElement.currentTime / audioElement.duration
 		bar.style.setProperty('--progress', percent.toString())
+
+		currentTime.innerHTML = this.formatTime(audioElement.currentTime)
+		totalTime.innerHTML = this.formatTime(audioElement.duration)
 	}
 
 	displaySubtitles() {
@@ -105,14 +123,6 @@ export default class HtmlManager {
 		} else {
 			this.addClass('active', audioButton)
 			audioElement.muted = true
-		}
-	}
-
-	update() {
-		const { currentTime, totalTime, audioElement } = this.elements
-		if (audioElement.readyState >= 2) {
-			currentTime.innerHTML = this.formatTime(audioElement.currentTime)
-			totalTime.innerHTML = this.formatTime(audioElement.duration)
 		}
 	}
 }
