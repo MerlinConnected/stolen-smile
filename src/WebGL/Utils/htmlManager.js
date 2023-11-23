@@ -13,6 +13,7 @@ export default class HtmlManager {
 			audioElement: document.querySelector('audio'),
 			trackElement: document.querySelector('track'),
 			playButton: document.querySelector('#start'),
+			subtitlesElement: document.querySelector('.subtitles'),
 		}
 
 		this.setupEventListeners()
@@ -49,7 +50,7 @@ export default class HtmlManager {
 	displaySubtitles() {
 		const activeCue = this.elements.trackElement.track.activeCues[0]
 		if (activeCue) {
-			console.log(activeCue.text)
+			this.elements.subtitlesElement.innerHTML = activeCue.text
 		}
 	}
 

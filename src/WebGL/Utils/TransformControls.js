@@ -36,7 +36,7 @@ export default class TransformControls extends EventEmitter {
 				}
 			}
 		})
-		this.instance.name = 'transformControl'
+		this.instance.name = 'transformControls'
 		this.experience.scene.add(this.instance)
 	}
 }
