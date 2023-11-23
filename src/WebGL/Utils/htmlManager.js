@@ -14,6 +14,7 @@ export default class HtmlManager {
 			trackElement: document.querySelector('track'),
 			playButton: document.querySelector('#start'),
 			subtitlesElement: document.querySelector('.subtitles'),
+			audioButton: document.querySelector('#audio'),
 		}
 
 		this.setupEventListeners()
@@ -34,6 +35,8 @@ export default class HtmlManager {
 			}
 		})
 		this.elements.player.addEventListener('mousemove', this.updateHoverPosition.bind(this))
+
+		this.elements.audioButton.addEventListener('click', this.toggleAudioClass.bind(this))
 	}
 
 	togglePlayPause() {
@@ -84,6 +87,23 @@ export default class HtmlManager {
 		const minutes = Math.floor(seconds / 60)
 		const remainingSeconds = Math.floor(seconds % 60)
 		return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
+	}
+
+	addClass(className, element) {
+		element.classList.add(className)
+	}
+
+	removeClass(className, element) {
+		element.classList.remove(className)
+	}
+
+	toggleAudioClass() {
+		const { audioButton } = this.elements
+		if (audioButton.classList.contains('active')) {
+			this.removeClass('active', audioButton)
+		} else {
+			this.addClass('active', audioButton)
+		}
 	}
 
 	update() {

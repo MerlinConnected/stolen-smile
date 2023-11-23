@@ -2,16 +2,12 @@
 	height: 200vh;
 }
 
-h1 {
-	font-family: Ogg, sans-serif;
-}
-
 button {
 	font-size: 1rem;
 	text-transform: uppercase;
 }
 
-.title-container {
+.header-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -22,13 +18,40 @@ button {
 
 	position: fixed;
 
-	padding-top: 6rem;
+	padding: 2rem;
 
-	p {
-		font-family: Manrope, sans-serif;
+	h1 {
 		text-align: center;
 		text-transform: uppercase;
-		font-size: 1rem;
+	}
+	> button {
+		align-self: flex-end;
+		position: relative;
+
+		&::after {
+			content: '';
+
+			background-image: url('/textures/line.svg');
+			background-repeat: no-repeat;
+			background-size: contain;
+
+			width: 100%;
+			height: 100%;
+
+			display: block;
+
+			position: absolute;
+
+			bottom: -50%;
+			left: 0;
+
+			opacity: 0;
+		}
+		&.active {
+			&::after {
+				opacity: 1;
+			}
+		}
 	}
 }
 
@@ -153,11 +176,4 @@ button {
 			}
 		}
 	}
-}
-
-.audio-container {
-	position: fixed;
-
-	top: 2rem;
-	right: 2rem;
 }
