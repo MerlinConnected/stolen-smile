@@ -98,11 +98,13 @@ export default class HtmlManager {
 	}
 
 	toggleAudioClass() {
-		const { audioButton } = this.elements
+		const { audioButton, audioElement } = this.elements
 		if (audioButton.classList.contains('active')) {
 			this.removeClass('active', audioButton)
+			audioElement.muted = false
 		} else {
 			this.addClass('active', audioButton)
+			audioElement.muted = true
 		}
 	}
 
