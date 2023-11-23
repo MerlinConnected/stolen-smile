@@ -18,6 +18,7 @@
 	{
 		"name": "paperTexture",
 		"type": "texture",
+		"colorSpace": "srgb",
 		"path": "textures/paper.webp"
 	}
 ]

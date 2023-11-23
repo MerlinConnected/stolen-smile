@@ -10,7 +10,7 @@ export class Vignette extends Effect {
 			uniforms: new Map([
 				['frontTexture', new Uniform(null)],
 				['maskTexture', new Uniform(null)],
-				['opacity', new Uniform(0)],
+				['opacity', new Uniform(1)],
 			]),
 		})
 

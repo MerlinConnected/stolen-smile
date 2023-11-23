@@ -1,7 +1,8 @@
 import Experience from './Experience.js'
 import { WebGLRenderer } from 'three'
-import { EffectComposer, RenderPass, EffectPass, DepthOfFieldEffect, BloomEffect } from 'postprocessing'
+import { EffectComposer, RenderPass, EffectPass, DepthOfFieldEffect } from 'postprocessing'
 import { Vignette } from 'webgl/PostProcessing/vignette/index.js'
+import gsap from 'gsap'
 
 export default class Renderer {
 	constructor() {
@@ -42,6 +43,12 @@ export default class Renderer {
 		})
 
 		this.vignetteEffect = new Vignette()
+		this.experience.resources.on('ready', () => {
+			gsap.to(this.vignetteEffect.uniforms.get('opacity'), {
+				duration: 2,
+				value: 0,
+			})
+		})
 
 		const effectPass = new EffectPass(this.camera.instance, this.depthOfFieldEffect, this.vignetteEffect)
 		this.composer.addPass(effectPass)

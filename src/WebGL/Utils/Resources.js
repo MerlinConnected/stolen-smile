@@ -3,7 +3,7 @@ import { AudioLoader, CubeTextureLoader, TextureLoader } from 'three'
 import Experience from 'webgl/Experience.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
-import { Texture, CubeTexture, Object3D, MathUtils } from 'three'
+import { Texture, CubeTexture, Object3D } from 'three'
 
 export default class Resources extends EventEmitter {
 	constructor(sources) {
@@ -94,7 +94,6 @@ export default class Resources extends EventEmitter {
 			console.debug(`🖼️ ${source.name} loaded in ${source.loadTime}ms. (${this.loaded}/${this.toLoad})`)
 
 		if (this.loadingScreenElement) {
-			//lerp value
 			const progressNumber = (this.loaded / this.toLoad) * 100
 			const progress = '0' + progressNumber
 
