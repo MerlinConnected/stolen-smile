@@ -87,15 +87,24 @@ export default class Resources extends EventEmitter {
 	}
 
 	updateProgress() {
-		this.progressValue = Math.round(MathUtils.lerp(this.progressValue, this.targetProgressValue, 0.1))
+		this.progressValue = MathUtils.lerp(this.progressValue, this.targetProgressValue, 0.1)
 
-		const progress = this.progressValue.toString().padStart(3, '0')
+		const progress = Math.round(this.progressValue).toString().padStart(3, '0')
 
 		this.loadingFirstCharactersElement.innerHTML = progress.slice(0, 2)
 		this.loadingSecondCharacterElement.innerHTML = progress.slice(2, 3)
 
-		if (this.progressValue < this.targetProgressValue || this.targetProgressValue === 0) {
+		if (Math.round(this.progressValue) < 100) {
 			requestAnimationFrame(this.updateProgress.bind(this))
+		} else {
+			this.trigger('ready')
+			gsap.to(this.loadingScreenElement, {
+				duration: 0.5,
+				opacity: 0,
+				onComplete: () => {
+					this.loadingScreenElement.remove()
+				},
+			})
 		}
 	}
 
@@ -119,15 +128,8 @@ export default class Resources extends EventEmitter {
 				console.debug(`✅ Resources loaded in ${totalLoadTime}ms!`)
 			}
 			if (this.loadingScreenElement) {
-				gsap.to(this.loadingScreenElement, {
-					duration: 1,
-					opacity: 0,
-					onComplete: () => {
-						this.loadingScreenElement.remove()
-					},
-				})
 			}
-			this.trigger('ready')
+			// this.trigger('ready')
 		}
 	}
 }
