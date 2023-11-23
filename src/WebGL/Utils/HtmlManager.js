@@ -5,25 +5,25 @@ export default class HtmlManager {
 		this.experience = new Experience()
 
 		this.elements = {
-			player: document.querySelector('.player'),
-			bar: document.querySelector('.player-bar'),
-			hover: document.querySelector('.hover-bar'),
+			subtitlesElement: document.querySelector('.subtitles'),
 			currentTime: document.querySelector('.current-time'),
 			totalTime: document.querySelector('.total-time'),
 			audioElement: document.querySelector('audio'),
 			trackElement: document.querySelector('track'),
-			playButton: document.querySelector('#start'),
-			subtitlesElement: document.querySelector('.subtitles'),
 			audioButton: document.querySelector('#audio'),
+			playButton: document.querySelector('#start'),
+			hover: document.querySelector('.hover-bar'),
+			bar: document.querySelector('.player-bar'),
+			player: document.querySelector('.player'),
 		}
 
 		this.setupEventListeners()
 	}
 
 	setupEventListeners() {
-		this.elements.playButton.addEventListener('click', this.togglePlayPause.bind(this))
 		this.elements.audioElement.addEventListener('timeupdate', this.updateProgressBar.bind(this))
 		this.elements.trackElement.addEventListener('cuechange', this.displaySubtitles.bind(this))
+		this.elements.playButton.addEventListener('click', this.togglePlayPause.bind(this))
 		this.elements.player.addEventListener('click', this.getCursorPosition.bind(this))
 		// handle mouse drag
 		let isMouseDown = false
