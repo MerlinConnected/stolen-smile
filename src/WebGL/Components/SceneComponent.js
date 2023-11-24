@@ -180,7 +180,7 @@ export default class SceneComponent {
 					if (sectionNumber === 1) {
 						this.roomSceneFragmentsUniforms.forEach((uniform) => {
 							gsap.to(uniform.uProgress, {
-								value: 0.8,
+								value: 0.85,
 								duration: 30,
 								ease: 'power4.out',
 								overwrite: true,

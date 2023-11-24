@@ -133,7 +133,9 @@ export default class HtmlManager extends EventEmitter {
 			})
 		})
 
-		this.togglePlayPause()
+		setTimeout(() => {
+			this.playAudio(this.elements.audioElement)
+		}, 1000)
 
 		gsap.to('.content-container', {
 			duration: 1,
@@ -258,10 +260,14 @@ export default class HtmlManager extends EventEmitter {
 		const { audioButton } = this.elements
 		if (audioButton.classList.contains('active')) {
 			this.removeClass('active', audioButton)
-			this.experience.audioManager.sounds.louvre.instance.muted = false
+			this.elements.audioElements.forEach((audioElement) => {
+				audioElement.muted = false
+			})
 		} else {
 			this.addClass('active', audioButton)
-			this.experience.audioManager.sounds.louvre.instance.muted = true
+			this.elements.audioElements.forEach((audioElement) => {
+				audioElement.muted = true
+			})
 		}
 	}
 }
