@@ -80,6 +80,7 @@ export default class HtmlManager extends EventEmitter {
 		this.elements.audioElement = audio
 		this.elements.audioElement.play()
 		this.elements.audioElement.active = true
+		this.displaySubtitles(this.elements.audioElement.querySelector('track'))
 	}
 
 	splitIntoWords(text) {
@@ -136,10 +137,6 @@ export default class HtmlManager extends EventEmitter {
 				this.displaySubtitles(trackElement)
 			})
 		})
-
-		setTimeout(() => {
-			this.playAudio(this.elements.audioElement)
-		}, 1000)
 
 		gsap.to('.content-container', {
 			duration: 1,
