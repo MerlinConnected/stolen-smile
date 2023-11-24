@@ -22,7 +22,6 @@ export default class Camera {
 		this.mouse = new Vector2(0, 0)
 
 		this.setInstance()
-		this.setAudioListener()
 		if (this.debug.active) this.setDebug()
 	}
 
@@ -42,11 +41,6 @@ export default class Camera {
 			this.mouse.x = 1 - event.clientX / this.sizes.width - 0.5
 			this.mouse.y = event.clientY / this.sizes.height - 0.5
 		})
-	}
-
-	setAudioListener() {
-		this.audioListener = new AudioListener()
-		this.instance.add(this.audioListener)
 	}
 
 	setControlsCamera() {

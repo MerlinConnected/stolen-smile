@@ -1,6 +1,7 @@
 import Experience from '../Experience'
 import gsap from 'gsap'
 import EventEmitter from './EventEmitter'
+import { PositionalAudio } from 'three'
 
 export default class HtmlManager extends EventEmitter {
 	constructor() {
@@ -12,7 +13,12 @@ export default class HtmlManager extends EventEmitter {
 			subtitlesElement: document.querySelector('.subtitles'),
 			currentTime: document.querySelector('.current-time'),
 			totalTime: document.querySelector('.total-time'),
-			audioElement: document.querySelector('audio'),
+			audioElement: document.querySelector('#audioSection0'),
+			audioElements: [
+				document.querySelector('#audioSection0'),
+				document.querySelector('#audioSection1'),
+				document.querySelector('#audioSection2'),
+			],
 			trackElement: document.querySelector('track'),
 			audioButton: document.querySelector('#audio'),
 			playButton: document.querySelector('#start'),
@@ -23,12 +29,10 @@ export default class HtmlManager extends EventEmitter {
 		}
 
 		this.setupEventListeners()
-		this.updateProgressBar()
+		this.updateProgressBar(this.elements.audioElement)
 	}
 
 	setupEventListeners() {
-		this.elements.audioElement.addEventListener('timeupdate', this.updateProgressBar.bind(this))
-		this.elements.trackElement.addEventListener('cuechange', this.displaySubtitles.bind(this))
 		this.elements.playButton.addEventListener('click', this.beginExperience.bind(this))
 		this.elements.player.addEventListener('click', this.getCursorPosition.bind(this))
 		// handle mouse drag
@@ -64,6 +68,16 @@ export default class HtmlManager extends EventEmitter {
 		audioElement.paused ? audioElement.play() : audioElement.pause()
 	}
 
+	playAudio(audio) {
+		this.elements.audioElement.pause()
+		this.elements.audioElement.currentTime = 0
+		this.elements.audioElement.volume = 1
+		this.elements.audioElement.active = false
+		this.elements.audioElement = audio
+		this.elements.audioElement.play()
+		this.elements.audioElement.active = true
+	}
+
 	splitIntoWords(text) {
 		return text.split(' ')
 	}
@@ -89,6 +103,33 @@ export default class HtmlManager extends EventEmitter {
 			duration: 1,
 			delay: 0.5,
 			value: 0,
+		})
+
+		this.experience.audioManager.setCameraListener()
+
+		this.elements.audioElements.forEach((audioElement) => {
+			const trackElement = audioElement.querySelector('track')
+			audioElement.addEventListener('playing', () => {
+				if (audioElement.positionalAudio) return
+				audioElement.positionalAudio = new PositionalAudio(this.experience.audioManager.audioListener)
+				audioElement.positionalAudio.setMediaElementSource(audioElement)
+				audioElement.positionalAudio.position.set(
+					audioElement.dataset.x,
+					audioElement.dataset.y,
+					audioElement.dataset.z,
+				)
+				audioElement.positionalAudio.setRefDistance(20)
+				this.experience.scene.add(audioElement.positionalAudio)
+			})
+			audioElement.addEventListener('timeupdate', () => {
+				if (audioElement.paused) return
+				this.updateProgressBar(audioElement)
+			})
+
+			trackElement.addEventListener('cuechange', () => {
+				if (audioElement.paused) return
+				this.displaySubtitles(trackElement)
+			})
 		})
 
 		this.togglePlayPause()
@@ -156,8 +197,8 @@ export default class HtmlManager extends EventEmitter {
 		this.trigger('beginExperience')
 	}
 
-	updateProgressBar() {
-		const { audioElement, bar, currentTime, totalTime } = this.elements
+	updateProgressBar(audioElement) {
+		const { bar, currentTime, totalTime } = this.elements
 		const percent = audioElement.currentTime / audioElement.duration
 		bar.style.setProperty('--progress', percent.toString())
 
@@ -165,8 +206,8 @@ export default class HtmlManager extends EventEmitter {
 		totalTime.innerHTML = this.formatTime(audioElement.duration)
 	}
 
-	displaySubtitles() {
-		const activeCue = this.elements.trackElement.track.activeCues[0]
+	displaySubtitles(trackElement) {
+		const activeCue = trackElement.track.activeCues[0]
 		if (activeCue) {
 			this.elements.subtitlesElement.innerHTML = activeCue.text
 		}
@@ -213,13 +254,13 @@ export default class HtmlManager extends EventEmitter {
 	}
 
 	toggleAudioClass() {
-		const { audioButton, audioElement } = this.elements
+		const { audioButton } = this.elements
 		if (audioButton.classList.contains('active')) {
 			this.removeClass('active', audioButton)
-			audioElement.muted = false
+			this.experience.audioManager.sounds.louvre.instance.muted = false
 		} else {
 			this.addClass('active', audioButton)
-			audioElement.muted = true
+			this.experience.audioManager.sounds.louvre.instance.muted = true
 		}
 	}
 }

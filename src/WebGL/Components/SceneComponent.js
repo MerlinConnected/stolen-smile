@@ -3,7 +3,6 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import addMeshDebug from 'utils/addMeshDebug.js'
 import Joconde from 'components/Joconde.js'
-import { MeshBasicMaterial } from 'three'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -208,6 +207,14 @@ export default class SceneComponent {
 			z: this.options.sceneParams[sectionNumber].cameraZPosition,
 			ease: this.options.isChanging ? 'power2.out' : 'power2.inOut',
 			overwrite: 'auto',
+		})
+
+		gsap.to(this.experience.htmlManager.elements.audioElement, {
+			volume: 0,
+			duration: 1,
+			onComplete: () => {
+				this.experience.htmlManager.playAudio(this.experience.htmlManager.elements.audioElements[sectionNumber])
+			},
 		})
 
 		// if (!isReverse) {

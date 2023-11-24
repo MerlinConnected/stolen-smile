@@ -11,19 +11,8 @@ export default class AudioManager {
 		this.scene = this.experience.scene
 		this.debug = this.experience.debug
 
-		this.setCameraListener()
 		this.resources.on('ready', () => {
-			this.sounds = {
-				earthquake: {
-					buffer: this.resources.items.earthquakeAudio,
-					position: new Vector3(1, 0, 0),
-					loop: false,
-					refDistance: 20,
-					volume: 1,
-					autoplay: false,
-				},
-			}
-			this.setSounds()
+			this.sounds = {}
 			if (this.debug.active) this.setDebug()
 		})
 	}
@@ -37,7 +26,8 @@ export default class AudioManager {
 		Object.keys(this.sounds).forEach((key) => {
 			const sound = this.sounds[key]
 			sound.instance = new PositionalAudio(this.audioListener)
-			sound.instance.setBuffer(sound.buffer)
+			// sound.instance.setBuffer(sound.buffer)
+			// sound.instance.setMediaElementSource(document.querySelector('audio'))
 			sound.instance.setRefDistance(sound.refDistance || 20)
 			sound.instance.setLoop(sound.loop || false)
 			sound.instance.setVolume(sound.volume || 1)
