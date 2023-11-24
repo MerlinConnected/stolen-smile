@@ -18,6 +18,7 @@ export default class HtmlManager extends EventEmitter {
 				document.querySelector('#audioSection0'),
 				document.querySelector('#audioSection1'),
 				document.querySelector('#audioSection2'),
+				document.querySelector('#audioSection3'),
 			],
 			trackElement: document.querySelector('track'),
 			audioButton: document.querySelector('#audio'),
