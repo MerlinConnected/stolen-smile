@@ -130,23 +130,35 @@ button {
 }
 
 .content-container {
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: center;
 	font-family: $font-serif;
 	text-align: center;
 	font-size: 1.25rem;
-
-	margin-top: 10rem;
 
 	.description {
 		line-height: 160%;
 		text-transform: uppercase;
 		margin: 6rem 0 11rem;
-		width: 915px;
+		max-width: 915px;
 		font-weight: 500;
 		letter-spacing: 3px;
 		color: #4a4345;
+	}
+
+	@media (max-width: 768px) {
+		.description {
+			font-size: 1rem;
+			width: 90%;
+			line-height: 140%;
+			margin: 3rem 0 6rem;
+		}
+		svg {
+			width: 90%;
+		}
 	}
 }
 
@@ -304,6 +316,7 @@ button {
 	row-gap: 3rem;
 
 	width: 100vw;
+	opacity: 0;
 
 	.subtitles {
 		grid-area: center-top;
@@ -319,8 +332,6 @@ button {
 		grid-area: left;
 
 		transition: opacity 0.5s ease-in-out;
-
-		opacity: 0;
 	}
 
 	button {
@@ -435,12 +446,16 @@ button {
 	padding: 20px 2rem;
 	position: relative;
 
+	@media (max-width: 768px) {
+		padding: 17px 1.25rem;
+	}
+
 	svg {
 		z-index: -1;
 		position: absolute;
-		top: 0;
-		left: 0;
+		inset: 0;
 		overflow: visible;
+		width: 100%;
 	}
 
 	path {

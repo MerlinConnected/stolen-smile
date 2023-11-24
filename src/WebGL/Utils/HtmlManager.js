@@ -158,7 +158,7 @@ export default class HtmlManager extends EventEmitter {
 			delay: 1,
 		})
 
-		gsap.to('.chapters', {
+		gsap.to('.footer-container', {
 			duration: 1,
 			opacity: 1,
 			delay: 1.2,
