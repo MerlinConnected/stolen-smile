@@ -27,6 +27,7 @@ export default class HtmlManager extends EventEmitter {
 			bar: document.querySelector('.player-bar'),
 			player: document.querySelector('.player'),
 			title: document.querySelector('h1'),
+			playPause: document.querySelector('#play-pause'),
 		}
 
 		this.setupEventListeners()
@@ -49,6 +50,7 @@ export default class HtmlManager extends EventEmitter {
 
 		this.elements.audioButton.addEventListener('click', this.toggleAudioClass.bind(this))
 		window.addEventListener('scroll', this.scrollPageAmmount.bind(this))
+		window.addEventListener('click', this.togglePlayPause.bind(this))
 	}
 
 	scrollPageAmmount() {
@@ -66,6 +68,7 @@ export default class HtmlManager extends EventEmitter {
 
 	togglePlayPause() {
 		const { audioElement } = this.elements
+		this.elements.playPause.innerHTML = audioElement.paused ? 'pause' : 'play'
 		audioElement.paused ? audioElement.play() : audioElement.pause()
 	}
 
@@ -122,6 +125,7 @@ export default class HtmlManager extends EventEmitter {
 				audioElement.positionalAudio.setRefDistance(20)
 				this.experience.scene.add(audioElement.positionalAudio)
 			})
+
 			audioElement.addEventListener('timeupdate', () => {
 				if (audioElement.paused) return
 				this.updateProgressBar(audioElement)
