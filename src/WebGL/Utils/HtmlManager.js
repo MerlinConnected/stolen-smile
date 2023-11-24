@@ -58,7 +58,7 @@ export default class HtmlManager extends EventEmitter {
 
 		const windowHeight = window.innerHeight
 
-		const scrollPercent = scrollAmmount / windowHeight / 7
+		const scrollPercent = scrollAmmount / windowHeight / 5
 
 		gsap.to('html', {
 			'--scroll': scrollPercent,

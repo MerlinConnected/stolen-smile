@@ -25,7 +25,7 @@ export default class SceneComponent {
 				},
 				{ cameraZPosition: -3, paintZPosition: -19.25 },
 				{ cameraZPosition: -19, paintZPosition: -35.25 },
-				{ cameraZPosition: -35, paintZPosition: -51.25 },
+				// { cameraZPosition: -35, paintZPosition: -51.25 },
 			],
 		}
 
@@ -33,7 +33,7 @@ export default class SceneComponent {
 		this.setLouvreModel()
 		this.setRoomModel()
 		this.setShopModel()
-		this.setItalyModel()
+		// this.setItalyModel()
 		this.setAnimation()
 		this.timelineInteractions()
 
