@@ -25,6 +25,7 @@ export default class SceneComponent {
 				},
 				{ cameraZPosition: -3, paintZPosition: -19.25 },
 				{ cameraZPosition: -19, paintZPosition: -35.25 },
+				{ cameraZPosition: -35, paintZPosition: -51.25 },
 			],
 		}
 
@@ -32,6 +33,7 @@ export default class SceneComponent {
 		this.setLouvreModel()
 		this.setRoomModel()
 		this.setShopModel()
+		this.setItalyModel()
 		this.setAnimation()
 		this.timelineInteractions()
 
@@ -145,6 +147,19 @@ export default class SceneComponent {
 		})
 	}
 
+	setItalyModel() {
+		this.italyModel = this.resources.items.louvreSceneModel.scene.clone()
+		this.italyModel.position.z = -48
+		this.italyModel.name = 'italyScene'
+		this.scene.add(this.italyModel)
+
+		this.italyModel.traverse((child) => {
+			if (child.material) {
+				// this.setMaterialTransition(child.material, 'italyScene')
+			}
+		})
+	}
+
 	setSection(sectionNumber, force = false) {
 		if (sectionNumber === this.options.scene && !force) return
 		const isReverse = this.options.scene >= sectionNumber
@@ -252,5 +267,6 @@ export default class SceneComponent {
 		addMeshDebug(this.debugFolder, this.louvreModel)
 		addMeshDebug(this.debugFolder, this.roomModel)
 		addMeshDebug(this.debugFolder, this.shopModel)
+		addMeshDebug(this.debugFolder, this.louvreModel)
 	}
 }

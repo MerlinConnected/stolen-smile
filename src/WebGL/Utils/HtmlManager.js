@@ -1,8 +1,11 @@
 import Experience from '../Experience'
 import gsap from 'gsap'
+import EventEmitter from './EventEmitter'
 
-export default class HtmlManager {
+export default class HtmlManager extends EventEmitter {
 	constructor() {
+		super()
+
 		this.experience = new Experience()
 
 		this.elements = {
@@ -17,11 +20,6 @@ export default class HtmlManager {
 			bar: document.querySelector('.player-bar'),
 			player: document.querySelector('.player'),
 			title: document.querySelector('h1'),
-			sections: [
-				document.querySelector('.section-0'),
-				document.querySelector('.section-1'),
-				document.querySelector('.section-2'),
-			],
 		}
 
 		this.setupEventListeners()
@@ -45,6 +43,20 @@ export default class HtmlManager {
 		this.elements.player.addEventListener('mousemove', this.updateHoverPosition.bind(this))
 
 		this.elements.audioButton.addEventListener('click', this.toggleAudioClass.bind(this))
+		window.addEventListener('scroll', this.scrollPageAmmount.bind(this))
+	}
+
+	scrollPageAmmount() {
+		const scrollAmmount = window.scrollY
+
+		const windowHeight = window.innerHeight
+
+		const scrollPercent = scrollAmmount / windowHeight / 7
+
+		gsap.to('html', {
+			'--scroll': scrollPercent,
+			duration: 0,
+		})
 	}
 
 	togglePlayPause() {
@@ -93,7 +105,7 @@ export default class HtmlManager {
 			opacity: 1,
 		})
 
-		gsap.to('.timeline-item', {
+		gsap.to('.timeline-container', {
 			x: 0,
 			duration: 1,
 			opacity: 1,
@@ -141,6 +153,7 @@ export default class HtmlManager {
 
 		// const spanWords = this.elements.title.querySelectorAll('.word')
 		// spanWords.forEach(this.animateWord)
+		this.trigger('beginExperience')
 	}
 
 	updateProgressBar() {

@@ -164,6 +164,41 @@ button {
 	flex-direction: column;
 	gap: 1rem;
 
+	opacity: 0;
+
+	&::before {
+		content: '';
+
+		position: absolute;
+
+		top: 0;
+		left: 1rem;
+
+		height: 100%;
+		width: 1.5px;
+
+		background-color: $color-brown;
+
+		opacity: 0.2;
+	}
+
+	&::after {
+		content: '';
+
+		position: absolute;
+
+		top: 0;
+		left: 1rem;
+
+		height: 100%;
+		width: 1.5px;
+
+		background-color: $color-brown;
+
+		transform: scaleY(var(--scroll));
+		transform-origin: top;
+	}
+
 	.timeline-item {
 		display: flex;
 		gap: 1rem;
@@ -172,10 +207,6 @@ button {
 		cursor: pointer;
 
 		transition: all 0.5s $ease-fast;
-
-		// transform: translateX(-1rem);
-
-		opacity: 0;
 
 		&:hover {
 			transform: translateX(0.5rem) !important;
