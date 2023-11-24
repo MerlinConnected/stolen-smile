@@ -17,6 +17,11 @@ export default class HtmlManager {
 			bar: document.querySelector('.player-bar'),
 			player: document.querySelector('.player'),
 			title: document.querySelector('h1'),
+			sections: [
+				document.querySelector('.section-0'),
+				document.querySelector('.section-1'),
+				document.querySelector('.section-2'),
+			],
 		}
 
 		this.setupEventListeners()
@@ -40,6 +45,35 @@ export default class HtmlManager {
 		this.elements.player.addEventListener('mousemove', this.updateHoverPosition.bind(this))
 
 		this.elements.audioButton.addEventListener('click', this.toggleAudioClass.bind(this))
+
+		window.addEventListener('scroll', this.logCurrentSectionAndScroll.bind(this))
+	}
+
+	logCurrentSectionAndScroll() {
+		const sections = this.elements.sections
+		let currentSectionIndex = 0
+		let scrollPercentage = 0
+
+		for (let i = 0; i < sections.length; i++) {
+			const section = sections[i]
+			const sectionTop = section.getBoundingClientRect().top
+			const sectionHeight = section.offsetHeight
+
+			if (sectionTop <= window.innerHeight && sectionTop + sectionHeight >= 0) {
+				currentSectionIndex = i
+				const scrolled = window.innerHeight - sectionTop
+				scrollPercentage = Math.min(Math.max(scrolled / sectionHeight, 0), 1)
+				break
+			}
+		}
+
+		var elem = document.querySelector('.timeline-item.active')
+
+		gsap.to(elem, {
+			x: scrollPercentage,
+		})
+
+		console.log(`Current Section: ${currentSectionIndex}, Scroll Percentage: ${scrollPercentage.toFixed(2)}`)
 	}
 
 	togglePlayPause() {

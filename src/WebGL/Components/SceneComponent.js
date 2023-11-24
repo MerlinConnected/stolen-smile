@@ -32,7 +32,19 @@ export default class SceneComponent {
 		this.setRoomModel()
 		this.setShopModel()
 		this.setAnimation()
+		this.timelineInteractions()
+
 		if (this.debug.active) this.setDebug()
+	}
+
+	timelineInteractions() {
+		document.querySelectorAll('.timeline-item').forEach((item, index) => {
+			item.addEventListener('click', () => {
+				document.querySelectorAll('.timeline-item').forEach((element) => element.classList.remove('active'))
+				item.classList.add('active')
+				this.setSection(index)
+			})
+		})
 	}
 
 	setLouvreModel() {
@@ -126,6 +138,10 @@ export default class SceneComponent {
 		if (sectionNumber === this.options.scene && !force) return
 		const isReverse = this.options.scene >= sectionNumber
 		this.options.scene = sectionNumber
+
+		document.querySelectorAll('.timeline-item').forEach((item, i) => {
+			item.classList.toggle('active', i === sectionNumber)
+		})
 
 		const paintTween = gsap.to(this.paint.mesh.position, {
 			z: this.options.sceneParams[sectionNumber].paintZPosition,
