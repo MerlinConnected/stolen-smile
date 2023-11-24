@@ -1,10 +1,11 @@
 import Experience from 'webgl/Experience.js'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import addMeshDebug from 'utils/addMeshDebug.js'
 import Joconde from 'components/Joconde.js'
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
 export default class SceneComponent {
 	constructor() {
@@ -44,7 +45,15 @@ export default class SceneComponent {
 			item.addEventListener('click', () => {
 				document.querySelectorAll('.timeline-item').forEach((element) => element.classList.remove('active'))
 				item.classList.add('active')
-				this.setSection(index)
+				// this.setSection(index)
+				//scroll to section
+				const section = document.querySelector(`.section-${index}`)
+
+				const additionalScroll = 50
+
+				const targetScrollPosition = section.offsetTop + additionalScroll
+
+				gsap.to(window, { duration: 1, scrollTo: targetScrollPosition })
 			})
 		})
 	}
