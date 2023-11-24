@@ -11,6 +11,11 @@
 		"path": "models/louvre/louvre.gltf"
 	},
 	{
+		"name": "roomSceneModel",
+		"type": "gltf",
+		"path": "models/room/room.gltf"
+	},
+	{
 		"name": "shopSceneModel",
 		"type": "gltf",
 		"path": "models/shop/shop.gltf"
