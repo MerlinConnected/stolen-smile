@@ -183,12 +183,6 @@ export default class HtmlManager extends EventEmitter {
 			delay: 1.8,
 		})
 
-		gsap.to('.archives', {
-			duration: 1,
-			opacity: 1,
-			delay: 2,
-		})
-
 		// const words = this.splitIntoWords(this.elements.title.innerHTML)
 		// this.elements.title.innerHTML = ''
 		// words.forEach((word, index) => {
