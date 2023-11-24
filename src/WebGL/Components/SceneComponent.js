@@ -98,9 +98,9 @@ export default class SceneComponent {
 
 						float distance = distance(vUv, vec2(0.35, 0.5));
 
-						float alpha = smoothstep(uProgress, uProgress + noise(vUv *50.) * 0.1, distance );
+						float alpha = smoothstep(uProgress, uProgress + noise(vUv *25.) * 0.1, distance );
 
-						vec4 placeholderColor = vec4(0.95, 0.81, 0.62, 1.);
+						vec4 placeholderColor = vec4(0.77,0.73,0.62, 1.);
 						vec4 color = mix(gl_FragColor, placeholderColor, alpha);
 						gl_FragColor = vec4(color.rgb, 1.0);
 					`,

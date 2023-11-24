@@ -39,7 +39,7 @@ export default class Renderer {
 
 		this.depthOfFieldEffect = new DepthOfFieldEffect(this.camera.instance, {
 			bokehScale: 5,
-			resolutionScale: 0.25,
+			resolutionScale: 0.5,
 		})
 
 		this.vignetteEffect = new Vignette()
