@@ -120,7 +120,7 @@ export default class SceneComponent {
 	}
 
 	setRoomModel() {
-		this.roomModel = this.resources.items.louvreSceneModel.scene.clone()
+		this.roomModel = this.resources.items.shopSceneModel.scene
 		this.roomModel.position.z = -16
 		this.roomModel.name = 'roomScene'
 		this.scene.add(this.roomModel)
@@ -133,14 +133,14 @@ export default class SceneComponent {
 	}
 
 	setShopModel() {
-		this.shopModel = this.resources.items.shopSceneModel.scene
+		this.shopModel = this.resources.items.shopSceneModel.scene.clone()
 		this.shopModel.position.z = -32
 		this.shopModel.name = 'shopScene'
 		this.scene.add(this.shopModel)
 
 		this.shopModel.traverse((child) => {
 			if (child.material) {
-				this.setMaterialTransition(child.material, 'shopScene')
+				// this.setMaterialTransition(child.material, 'shopScene')
 			}
 		})
 	}
