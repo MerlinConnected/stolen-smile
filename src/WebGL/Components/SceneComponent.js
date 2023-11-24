@@ -96,7 +96,7 @@ export default class SceneComponent {
 				`#include <dithering_fragment>`,
 				`#include <dithering_fragment>
 
-						float distance = distance(vUv, vec2(0.4, 0.42));
+						float distance = distance(vUv, vec2(0.35, 0.5));
 
 						float alpha = smoothstep(uProgress, uProgress + noise(vUv *50.) * 0.1, distance );
 
@@ -127,6 +127,23 @@ export default class SceneComponent {
 		this.louvreModel = this.resources.items.louvreSceneModel.scene
 		this.louvreModel.name = 'louvreScene'
 		this.scene.add(this.louvreModel)
+		this.louvreModel.traverse((child) => {
+			if (child.material) {
+				this.setMaterialTransition(child.material, 'louvreScene')
+			}
+		})
+
+		this.experience.htmlManager.on('beginExperience', () => {
+			this.louvreSceneFragmentsUniforms.forEach((uniform) => {
+				gsap.to(uniform.uProgress, {
+					value: 0.8,
+					duration: 30,
+					delay: 1,
+					ease: 'power4.out',
+					overwrite: true,
+				})
+			})
+		})
 	}
 
 	setRoomModel() {
@@ -186,6 +203,7 @@ export default class SceneComponent {
 				const progress = paintTween.progress()
 				if (progress > 0.6) {
 					this.options.isChanging = false
+
 					if (sectionNumber === 1) {
 						this.roomSceneFragmentsUniforms.forEach((uniform) => {
 							gsap.to(uniform.uProgress, {
