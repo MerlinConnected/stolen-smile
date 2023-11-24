@@ -53,7 +53,7 @@ export default class SceneComponent {
 
 				const targetScrollPosition = section.offsetTop + additionalScroll
 
-				gsap.to(window, { duration: 1, scrollTo: targetScrollPosition })
+				gsap.set(window, { scrollTo: targetScrollPosition })
 			})
 		})
 	}
@@ -199,6 +199,7 @@ export default class SceneComponent {
 			ease: this.options.isChanging ? 'power4.out' : 'power4.inOut',
 			overwrite: 'auto',
 			onUpdate: () => {
+				this.camera.options.target = this.paint.mesh.position
 				if (!this.options.isChanging) return
 				const progress = paintTween.progress()
 				if (progress > 0.6) {
