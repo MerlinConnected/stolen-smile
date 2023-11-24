@@ -68,7 +68,7 @@ export default class HtmlManager extends EventEmitter {
 
 	togglePlayPause() {
 		const { audioElement } = this.elements
-		this.elements.playPause.innerHTML = audioElement.paused ? 'pause' : 'play'
+		this.elements.playPause.innerHTML = audioElement.paused ? 'pause' : 'lecture'
 		audioElement.paused ? audioElement.play() : audioElement.pause()
 	}
 
@@ -105,7 +105,7 @@ export default class HtmlManager extends EventEmitter {
 
 	beginExperience() {
 		gsap.to(this.experience.renderer.vignetteEffect.uniforms.get('opacity'), {
-			duration: 1,
+			duration: 2,
 			delay: 0.5,
 			value: 0,
 		})

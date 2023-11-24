@@ -137,9 +137,9 @@ export default class SceneComponent {
 			this.louvreSceneFragmentsUniforms.forEach((uniform) => {
 				gsap.to(uniform.uProgress, {
 					value: 0.8,
-					duration: 30,
-					delay: 1,
-					ease: 'power4.out',
+					duration: 4,
+					delay: 0.5,
+					ease: 'power1.in',
 					overwrite: true,
 				})
 			})
@@ -208,8 +208,8 @@ export default class SceneComponent {
 						this.roomSceneFragmentsUniforms.forEach((uniform) => {
 							gsap.to(uniform.uProgress, {
 								value: 0.85,
-								duration: 30,
-								ease: 'power4.out',
+								duration: 4,
+								ease: 'power1.in',
 								overwrite: true,
 							})
 						})
@@ -218,8 +218,8 @@ export default class SceneComponent {
 						this.shopSceneFragmentsUniforms.forEach((uniform) => {
 							gsap.to(uniform.uProgress, {
 								value: 0.8,
-								duration: 30,
-								ease: 'power4.out',
+								duration: 4,
+								ease: 'power1.in',
 								overwrite: true,
 							})
 						})
