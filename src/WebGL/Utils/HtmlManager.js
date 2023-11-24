@@ -74,6 +74,8 @@ export default class HtmlManager {
 			value: 0,
 		})
 
+		this.togglePlayPause()
+
 		gsap.to('.content-container', {
 			duration: 1,
 			opacity: 0,
