@@ -14,7 +14,7 @@ export default class Renderer {
 		this.debug = this.experience.debug
 
 		this.options = {
-			postprocessing: false,
+			postprocessing: true,
 		}
 
 		this.setInstance()
