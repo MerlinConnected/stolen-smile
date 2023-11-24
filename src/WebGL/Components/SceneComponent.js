@@ -56,7 +56,6 @@ export default class SceneComponent {
 						varying vec2 vUv;
 						${shader.fragmentShader}
 					`
-					console.log(shader.fragmentShader)
 					shader.fragmentShader = shader.fragmentShader.replace(
 						`#include <dithering_fragment>`,
 						`#include <dithering_fragment>
@@ -128,9 +127,6 @@ export default class SceneComponent {
 				duration: 10,
 				ease: 'power4.out',
 				overwrite: true,
-				onUpdate: () => {
-					console.log(this.fragmentUniforms.uProgress.value)
-				},
 			})
 		}
 
@@ -146,6 +142,8 @@ export default class SceneComponent {
 		// 		},
 		// 	})
 		// }
+
+		this.setChapterNumber()
 	}
 
 	setAnimation() {
@@ -166,6 +164,10 @@ export default class SceneComponent {
 				},
 			})
 		})
+	}
+
+	setChapterNumber() {
+		document.querySelector('.chapter-num').innerHTML = this.options.scene + 1
 	}
 
 	setDebug() {

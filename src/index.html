@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
@@ -30,9 +30,9 @@
 			</div>
 			<div class="header-container">
 				<button id="audio">Audio.</button>
-				<div>
+				<!-- <div>
 					<h1>Paris, Décembre 1913</h1>
-				</div>
+				</div> -->
 			</div>
 			<div class="content-container">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 1098 294" width="1098">
@@ -100,7 +100,7 @@
 							d="M215.6.5c0 3.7.5 6.3 2 7.9 1.7 1.5 4.2 2 7.9 2.1v39c-3.7 0-6.2.6-7.8 2.1-1.6 1.6-2.1 4.2-2.1 7.9H10.4c0-3.7-.5-6.3-2-7.9-1.7-1.5-4.2-2-7.9-2.1v-39c3.7 0 6.2-.6 7.8-2.1C10 6.8 10.4 4.2 10.4.5h205.2Z"
 						/>
 					</svg>
-					Découvrir l’histoire
+					Découvrir l'histoire
 				</button>
 			</div>
 			<div class="timeline-container">
@@ -151,7 +151,10 @@
 			</div>
 			<div class="footer-container">
 				<p class="subtitles"></p>
-				<p class="chapters">Chapitre N°.1</p>
+				<p class="chapters">
+					Chapitre N°
+					<span class="chapter-num">1</span>
+				</p>
 				<div class="player-container">
 					<p class="current-time"></p>
 					<div class="player">
@@ -160,7 +163,7 @@
 					</div>
 					<p class="total-time"></p>
 				</div>
-				<button>Archives</button>
+				<button class="archives">Archives</button>
 			</div>
 		</div>
 		<canvas id="webgl"></canvas>

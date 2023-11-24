@@ -26,11 +26,6 @@ button {
 		.loading {
 			opacity: 0;
 		}
-
-		.header-container,
-		.footer-container {
-			opacity: 1;
-		}
 	}
 }
 
@@ -92,6 +87,18 @@ button {
 	h1 {
 		text-align: center;
 		text-transform: uppercase;
+
+		overflow: hidden;
+
+		font-size: 1.2rem;
+
+		span {
+			display: inline-block;
+			transition: opacity transform 0.3s ease-out;
+			transform: translateY(100%);
+
+			margin-right: 4px;
+		}
 	}
 	> button {
 		align-self: flex-end;
@@ -166,8 +173,12 @@ button {
 
 		transition: all 0.5s $ease-fast;
 
+		transform: translateX(-1rem);
+
+		opacity: 0;
+
 		&:hover {
-			transform: translateX(0.5rem);
+			transform: translateX(0.5rem) !important;
 			.icon-container {
 				svg {
 					path {
@@ -248,8 +259,6 @@ button {
 
 .footer-container {
 	position: fixed;
-	opacity: 0;
-	transition: opacity 0.5s ease-in-out;
 
 	bottom: 0;
 
@@ -278,6 +287,10 @@ button {
 	.chapters {
 		text-transform: uppercase;
 		grid-area: left;
+
+		transition: opacity 0.5s ease-in-out;
+
+		opacity: 0;
 	}
 
 	button {
@@ -298,12 +311,17 @@ button {
 		grid-area: center-bottom;
 
 		p {
-			&:first-of-type {
+			transition: all 0.5s ease-in-out;
+
+			&.current-time {
 				width: 4rem;
 				text-align: right;
+
+				opacity: 0;
 			}
-			&:last-of-type {
+			&.total-time {
 				width: 4rem;
+				opacity: 0;
 			}
 		}
 		.player {
@@ -315,6 +333,13 @@ button {
 			position: relative;
 
 			cursor: pointer;
+
+			transition: scale opacity 0.5s ease-in-out;
+			transform-origin: left;
+
+			opacity: 0;
+
+			transform: scaleX(0);
 
 			.player-bar {
 				position: absolute;
@@ -368,6 +393,11 @@ button {
 				}
 			}
 		}
+	}
+	.archives {
+		transition: opacity 0.5s ease-in-out;
+
+		opacity: 0;
 	}
 }
 

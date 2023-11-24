@@ -16,6 +16,7 @@ export default class HtmlManager {
 			hover: document.querySelector('.hover-bar'),
 			bar: document.querySelector('.player-bar'),
 			player: document.querySelector('.player'),
+			title: document.querySelector('h1'),
 		}
 
 		this.setupEventListeners()
@@ -46,6 +47,26 @@ export default class HtmlManager {
 		audioElement.paused ? audioElement.play() : audioElement.pause()
 	}
 
+	splitIntoWords(text) {
+		return text.split(' ')
+	}
+
+	createWordSpan(word, index) {
+		const wordElement = document.createElement('span')
+		wordElement.innerHTML = word
+		wordElement.classList.add('word')
+		wordElement.style.setProperty('--index', index)
+		return wordElement
+	}
+
+	animateWord(word, index) {
+		gsap.to(word, {
+			y: 0,
+			opacity: 1,
+			delay: index * 0.1,
+		})
+	}
+
 	beginExperience() {
 		gsap.to(this.experience.renderer.vignetteEffect.uniforms.get('opacity'), {
 			duration: 1,
@@ -56,7 +77,63 @@ export default class HtmlManager {
 		gsap.to('.content-container', {
 			duration: 1,
 			opacity: 0,
+			userSelect: 'none',
+			pointerEvents: 'none',
 		})
+
+		gsap.to('.header-container', {
+			duration: 1,
+			opacity: 1,
+		})
+
+		gsap.to('.timeline-item', {
+			x: 0,
+			duration: 1,
+			opacity: 1,
+			stagger: 0.1,
+			delay: 1,
+		})
+
+		gsap.to('.chapters', {
+			duration: 1,
+			opacity: 1,
+			delay: 1.2,
+		})
+
+		gsap.to('.current-time', {
+			duration: 1,
+			opacity: 1,
+			delay: 1.4,
+		})
+
+		gsap.to('.player', {
+			scaleX: 1,
+			duration: 1,
+			opacity: 1,
+			delay: 2.2,
+		})
+
+		gsap.to('.total-time', {
+			duration: 1,
+			opacity: 1,
+			delay: 1.8,
+		})
+
+		gsap.to('.archives', {
+			duration: 1,
+			opacity: 1,
+			delay: 2,
+		})
+
+		// const words = this.splitIntoWords(this.elements.title.innerHTML)
+		// this.elements.title.innerHTML = ''
+		// words.forEach((word, index) => {
+		// 	const wordElement = this.createWordSpan(word, index)
+		// 	this.elements.title.appendChild(wordElement)
+		// })
+
+		// const spanWords = this.elements.title.querySelectorAll('.word')
+		// spanWords.forEach(this.animateWord)
 	}
 
 	updateProgressBar() {
