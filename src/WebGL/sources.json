@@ -11,6 +11,11 @@
 		"path": "models/louvre/louvre.gltf"
 	},
 	{
+		"name": "shopSceneModel",
+		"type": "gltf",
+		"path": "models/shop/shop.gltf"
+	},
+	{
 		"name": "vignetteMaskTexture",
 		"type": "texture",
 		"path": "textures/vignette_mask.webp"

@@ -17,7 +17,7 @@ export default class Joconde {
 	}
 
 	setGeometry() {
-		this.geometry = new PlaneGeometry(0.83, 1.24)
+		this.geometry = new PlaneGeometry(0.83, 1.23)
 	}
 
 	setMaterial() {

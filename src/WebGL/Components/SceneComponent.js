@@ -3,6 +3,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import addMeshDebug from 'utils/addMeshDebug.js'
 import Joconde from 'components/Joconde.js'
+import { MeshBasicMaterial } from 'three'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -47,23 +48,10 @@ export default class SceneComponent {
 		})
 	}
 
-	setLouvreModel() {
-		this.louvreModel = this.resources.items.louvreSceneModel.scene
-		this.louvreModel.name = 'louvreScene'
-		this.scene.add(this.louvreModel)
-	}
-
-	setRoomModel() {
-		this.roomModel = this.resources.items.louvreSceneModel.scene.clone()
-		this.roomModel.position.z = -16
-		this.roomModel.name = 'roomScene'
-		this.scene.add(this.roomModel)
-
-		this.roomModel.traverse((child) => {
-			if (child.material?.name.includes('Paper')) {
-				//shader reveal effect from center (use fragment shader)
-				child.material.onBeforeCompile = (shader) => {
-					shader.fragmentShader = `
+	setMaterialTransition(material, sceneName) {
+		this[sceneName + 'FragmentsUniforms'] = []
+		material.onBeforeCompile = (shader) => {
+			shader.fragmentShader = `
 						uniform float uProgress;
 						varying vec2 vUv;
 
@@ -94,9 +82,9 @@ export default class SceneComponent {
 						}
 						${shader.fragmentShader}
 					`
-					shader.fragmentShader = shader.fragmentShader.replace(
-						`#include <dithering_fragment>`,
-						`#include <dithering_fragment>
+			shader.fragmentShader = shader.fragmentShader.replace(
+				`#include <dithering_fragment>`,
+				`#include <dithering_fragment>
 
 						float distance = distance(vUv, vec2(0.4, 0.42));
 
@@ -106,32 +94,55 @@ export default class SceneComponent {
 						vec4 color = mix(gl_FragColor, placeholderColor, alpha);
 						gl_FragColor = vec4(color.rgb, 1.0);
 					`,
-					)
-					this.fragmentUniforms = shader.uniforms
-					this.fragmentUniforms.uProgress = { value: 0 }
+			)
+			shader.uniforms.uProgress = { value: 0 }
+			this[sceneName + 'FragmentsUniforms'].push(shader.uniforms)
 
-					const vertexShader = shader.vertexShader
-					shader.vertexShader = `
+			const vertexShader = shader.vertexShader
+			shader.vertexShader = `
 						varying vec2 vUv;
 						${vertexShader}
 					`
-					shader.vertexShader = shader.vertexShader.replace(
-						`#include <begin_vertex>`,
-						`
+			shader.vertexShader = shader.vertexShader.replace(
+				`#include <begin_vertex>`,
+				`
 						#include <begin_vertex>
 						vUv = uv;
 					`,
-					)
-				}
+			)
+		}
+	}
+
+	setLouvreModel() {
+		this.louvreModel = this.resources.items.louvreSceneModel.scene
+		this.louvreModel.name = 'louvreScene'
+		this.scene.add(this.louvreModel)
+	}
+
+	setRoomModel() {
+		this.roomModel = this.resources.items.louvreSceneModel.scene.clone()
+		this.roomModel.position.z = -16
+		this.roomModel.name = 'roomScene'
+		this.scene.add(this.roomModel)
+
+		this.roomModel.traverse((child) => {
+			if (child.material) {
+				this.setMaterialTransition(child.material, 'roomScene')
 			}
 		})
 	}
 
 	setShopModel() {
-		this.shopModel = this.resources.items.louvreSceneModel.scene.clone()
+		this.shopModel = this.resources.items.shopSceneModel.scene
 		this.shopModel.position.z = -32
 		this.shopModel.name = 'shopScene'
 		this.scene.add(this.shopModel)
+
+		this.shopModel.traverse((child) => {
+			if (child.material) {
+				this.setMaterialTransition(child.material, 'shopScene')
+			}
+		})
 	}
 
 	setSection(sectionNumber, force = false) {
@@ -153,11 +164,23 @@ export default class SceneComponent {
 				if (progress > 0.6) {
 					this.options.isChanging = false
 					if (sectionNumber === 1) {
-						gsap.to(this.fragmentUniforms.uProgress, {
-							value: 0.8,
-							duration: 30,
-							ease: 'power4.out',
-							overwrite: true,
+						this.roomSceneFragmentsUniforms.forEach((uniform) => {
+							gsap.to(uniform.uProgress, {
+								value: 0.8,
+								duration: 30,
+								ease: 'power4.out',
+								overwrite: true,
+							})
+						})
+					}
+					if (sectionNumber === 2) {
+						this.shopSceneFragmentsUniforms.forEach((uniform) => {
+							gsap.to(uniform.uProgress, {
+								value: 0.8,
+								duration: 30,
+								ease: 'power4.out',
+								overwrite: true,
+							})
 						})
 					}
 				}
@@ -228,5 +251,6 @@ export default class SceneComponent {
 
 		addMeshDebug(this.debugFolder, this.louvreModel)
 		addMeshDebug(this.debugFolder, this.roomModel)
+		addMeshDebug(this.debugFolder, this.shopModel)
 	}
 }
