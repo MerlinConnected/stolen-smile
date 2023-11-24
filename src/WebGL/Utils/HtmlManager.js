@@ -57,6 +57,7 @@ export default class HtmlManager {
 			duration: 1,
 			opacity: 0,
 		})
+		this.togglePlayPause()
 	}
 
 	updateProgressBar() {
