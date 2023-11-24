@@ -193,7 +193,7 @@ button {
 
 		background-color: $color-brown;
 
-		transform: scaleY(var(--scroll));
+		transform: scaleY(var(--scroll, 0));
 		transform-origin: top;
 	}
 
@@ -363,7 +363,6 @@ button {
 
 			cursor: pointer;
 
-			transition: scale opacity 0.5s ease-in-out;
 			transform-origin: left;
 
 			opacity: 0;
