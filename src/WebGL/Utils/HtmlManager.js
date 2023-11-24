@@ -50,7 +50,7 @@ export default class HtmlManager extends EventEmitter {
 
 		this.elements.audioButton.addEventListener('click', this.toggleAudioClass.bind(this))
 		window.addEventListener('scroll', this.scrollPageAmmount.bind(this))
-		window.addEventListener('click', this.togglePlayPause.bind(this))
+		this.elements.playPause.addEventListener('click', this.togglePlayPause.bind(this))
 	}
 
 	scrollPageAmmount() {
@@ -80,27 +80,7 @@ export default class HtmlManager extends EventEmitter {
 		this.elements.audioElement = audio
 		this.elements.audioElement.play()
 		this.elements.audioElement.active = true
-		this.displaySubtitles(this.elements.audioElement.querySelector('track'))
-	}
-
-	splitIntoWords(text) {
-		return text.split(' ')
-	}
-
-	createWordSpan(word, index) {
-		const wordElement = document.createElement('span')
-		wordElement.innerHTML = word
-		wordElement.classList.add('word')
-		wordElement.style.setProperty('--index', index)
-		return wordElement
-	}
-
-	animateWord(word, index) {
-		gsap.to(word, {
-			y: 0,
-			opacity: 1,
-			delay: index * 0.1,
-		})
+		// this.displaySubtitles(this.elements.audioElement.querySelector('track'))
 	}
 
 	beginExperience() {
@@ -108,6 +88,9 @@ export default class HtmlManager extends EventEmitter {
 			duration: 2,
 			delay: 0.5,
 			value: 0,
+			onComplete: () => {
+				this.playAudio(this.elements.audioElement)
+			},
 		})
 
 		this.experience.audioManager.setCameraListener()
@@ -182,16 +165,6 @@ export default class HtmlManager extends EventEmitter {
 			opacity: 1,
 			delay: 1.8,
 		})
-
-		// const words = this.splitIntoWords(this.elements.title.innerHTML)
-		// this.elements.title.innerHTML = ''
-		// words.forEach((word, index) => {
-		// 	const wordElement = this.createWordSpan(word, index)
-		// 	this.elements.title.appendChild(wordElement)
-		// })
-
-		// const spanWords = this.elements.title.querySelectorAll('.word')
-		// spanWords.forEach(this.animateWord)
 		this.trigger('beginExperience')
 	}
 
@@ -207,7 +180,25 @@ export default class HtmlManager extends EventEmitter {
 	displaySubtitles(trackElement) {
 		const activeCue = trackElement.track.activeCues[0]
 		if (activeCue) {
-			this.elements.subtitlesElement.innerHTML = activeCue.text
+			gsap.to('.subtitles-word', {
+				duration: 0.5,
+				opacity: 0,
+				onComplete: () => {
+					this.elements.subtitlesElement.innerHTML = ''
+					const words = activeCue.text.split(' ')
+					words.forEach((word) => {
+						const wordElement = document.createElement('span')
+						wordElement.innerHTML = word + '&nbsp;'
+						wordElement.classList.add('subtitles-word')
+						this.elements.subtitlesElement.appendChild(wordElement)
+					})
+					gsap.from('.subtitles-word', {
+						duration: 1.5,
+						opacity: 0,
+						stagger: 0.1,
+					})
+				},
+			})
 		}
 	}
 
@@ -226,6 +217,8 @@ export default class HtmlManager extends EventEmitter {
 		const { player } = this.elements
 		const elementRect = player.getBoundingClientRect()
 		const x = event.pageX - elementRect.left
+		if (x < 0) return 0
+		if (x > player.offsetWidth) return 1
 		return x / player.offsetWidth
 	}
 
