@@ -161,7 +161,7 @@ export default class SceneComponent {
 
 	setShopModel() {
 		this.shopModel = this.resources.items.shopSceneModel.scene
-		this.shopModel.position.z = -32
+		this.shopModel.position.z = -32.6
 		this.shopModel.name = 'shopScene'
 		this.scene.add(this.shopModel)
 
