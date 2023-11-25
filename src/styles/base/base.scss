@@ -14,3 +14,16 @@ body {
 	left: 0;
 	outline: none;
 }
+
+.section {
+	height: 200vh;
+}
+
+button {
+	font-size: 1rem;
+	text-transform: uppercase;
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
