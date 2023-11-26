@@ -178,7 +178,7 @@ export default class HtmlManager extends EventEmitter {
 	}
 
 	displaySubtitles(trackElement) {
-		const activeCue = trackElement.track.activeCues[0]
+		const activeCue = trackElement.track.activeCues[trackElement.track.activeCues.length - 1]
 		if (activeCue) {
 			gsap.to('.subtitles-word', {
 				duration: 0.5,

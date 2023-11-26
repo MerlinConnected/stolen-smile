@@ -302,6 +302,5 @@ export default class SceneComponent {
 		addMeshDebug(this.debugFolder, this.louvreModel)
 		addMeshDebug(this.debugFolder, this.roomModel)
 		addMeshDebug(this.debugFolder, this.shopModel)
-		addMeshDebug(this.debugFolder, this.louvreModel)
 	}
 }

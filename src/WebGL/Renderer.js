@@ -26,6 +26,7 @@ export default class Renderer {
 		this.instance = new WebGLRenderer({
 			canvas: this.canvas,
 			powerPreference: 'high-performance',
+			antialias: true,
 		})
 		this.instance.setClearColor(0xefcb99)
 		this.instance.setSize(this.sizes.width, this.sizes.height)
