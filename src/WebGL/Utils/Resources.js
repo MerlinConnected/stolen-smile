@@ -4,7 +4,6 @@ import Experience from 'webgl/Experience.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { Texture, CubeTexture, Object3D } from 'three'
-import gsap from 'gsap'
 
 export default class Resources extends EventEmitter {
 	constructor(sources) {
@@ -122,6 +121,7 @@ export default class Resources extends EventEmitter {
 				console.debug(`✅ Resources loaded in ${totalLoadTime}ms!`)
 			}
 			this.trigger('ready')
+			window.scrollTo(0, 0)
 		}
 	}
 }

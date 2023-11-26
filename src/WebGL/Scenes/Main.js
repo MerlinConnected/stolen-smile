@@ -11,6 +11,7 @@ export default class Main {
 		// Wait for resources
 		this.resources.on('ready', () => {
 			// Setup
+
 			this.sceneComponent = new SceneComponent()
 		})
 	}

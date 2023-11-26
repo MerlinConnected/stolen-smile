@@ -68,7 +68,7 @@ export default class HtmlManager extends EventEmitter {
 
 	togglePlayPause() {
 		const { audioElement } = this.elements
-		this.elements.playPause.innerHTML = audioElement.paused ? 'pause' : 'lecture'
+		this.elements.playPause.innerHTML = audioElement.paused ? 'pause.' : 'lecture.'
 		audioElement.paused ? audioElement.play() : audioElement.pause()
 	}
 
