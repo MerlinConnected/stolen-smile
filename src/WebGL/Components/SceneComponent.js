@@ -38,7 +38,7 @@ export default class SceneComponent {
 		this.setAnimation()
 		this.timelineInteractions()
 
-		// if (this.debug.active) this.setDebug()
+		if (this.debug.active) this.setDebug()
 	}
 
 	timelineInteractions() {
@@ -247,19 +247,6 @@ export default class SceneComponent {
 				this.experience.htmlManager.playAudio(this.experience.htmlManager.elements.audioElements[sectionNumber])
 			},
 		})
-
-		// if (!isReverse) {
-		// 	gsap.to(this.camera.sceneCamera, {
-		// 		keyframes: [
-		// 			{ ease: 'power1.in', duration: 0.9, fov: 12 },
-		// 			{ ease: 'power1.out', duration: 1, fov: this.camera.options.fov },
-		// 		],
-		// 		delay: 2,
-		// 		onUpdate: () => {
-		// 			this.camera.sceneCamera.updateProjectionMatrix()
-		// 		},
-		// 	})
-		// }
 
 		this.setChapterNumber()
 	}
