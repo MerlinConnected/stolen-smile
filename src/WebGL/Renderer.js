@@ -50,7 +50,7 @@ export default class Renderer {
 	}
 
 	setDebug() {
-		this.debugFolder = this.debug.ui.addFolder({ title: 'Postprocessing' })
+		this.debugFolder = this.debug.ui.addFolder({ title: 'Postprocessing', expanded: false })
 		this.debugFolder.addBinding(this.options, 'postprocessing', { label: 'active' })
 		this.debugFolder.addBinding(this.depthOfFieldEffect, 'bokehScale', {
 			label: 'bokehScale',

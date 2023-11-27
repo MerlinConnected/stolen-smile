@@ -13,15 +13,15 @@ export default class Particles {
 
 		this.options = {
 			color: new Color(0xdfbb86),
-			count: 1000,
+			count: 1500,
 			size: {
 				min: 0.1,
-				max: 1,
+				max: 0.8,
 			},
 			position: {
 				x: { min: -6, max: 6 },
 				y: { min: 0, max: 6 },
-				z: { min: -36, max: 4 },
+				z: { min: -36, max: 10 },
 			},
 		}
 
@@ -50,7 +50,8 @@ export default class Particles {
 			vertexShader,
 			fragmentShader,
 			blending: AdditiveBlending,
-			depthWrite: false,
+			transparent: true,
+			// depthWrite: false,
 			uniforms: {
 				uTime: { value: 0 },
 				uColor: { value: this.options.color },
