@@ -37,8 +37,8 @@ export default class Camera {
 		this.instance = this.sceneCamera
 
 		window.addEventListener('mousemove', (event) => {
-			this.mouse.x = 1 - event.clientX / this.sizes.width - 0.5
-			this.mouse.y = event.clientY / this.sizes.height - 0.5
+			this.mouse.x = event.clientX / this.sizes.width - 0.5
+			this.mouse.y = 1 - event.clientY / this.sizes.height - 0.5
 		})
 	}
 
@@ -109,12 +109,12 @@ export default class Camera {
 	update() {
 		this.sceneCamera.position.x = MathUtils.lerp(
 			this.sceneCamera.position.x,
-			this.mouse.x * 0.75 + this.options.position.x,
+			this.mouse.x * 0.5 + this.options.position.x,
 			0.05,
 		)
 		this.sceneCamera.position.y = MathUtils.lerp(
 			this.sceneCamera.position.y,
-			this.mouse.y * 0.75 + this.options.position.y,
+			this.mouse.y * 0.5 + this.options.position.y,
 			0.05,
 		)
 		this.sceneCamera.lookAt(this.options.target)
