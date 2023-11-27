@@ -92,6 +92,7 @@ export default class HtmlManager extends EventEmitter {
 				this.playAudio(this.elements.audioElement)
 			},
 		})
+		document.body.style.overflow = 'visible'
 
 		this.experience.audioManager.setCameraListener()
 

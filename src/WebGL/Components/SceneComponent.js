@@ -199,7 +199,7 @@ export default class SceneComponent {
 			ease: this.options.isChanging ? 'power4.out' : 'power4.inOut',
 			overwrite: 'auto',
 			onUpdate: () => {
-				this.camera.options.target = this.paint.mesh.position
+				this.camera.options.target.copy(this.paint.mesh.position)
 				if (!this.options.isChanging) return
 				const progress = paintTween.progress()
 				if (progress > 0.6) {
