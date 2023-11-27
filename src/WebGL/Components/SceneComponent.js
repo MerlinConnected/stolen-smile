@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import addMeshDebug from 'utils/addMeshDebug.js'
 import Joconde from 'components/Joconde.js'
+import { Color } from 'three'
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
@@ -37,7 +38,7 @@ export default class SceneComponent {
 		this.setAnimation()
 		this.timelineInteractions()
 
-		if (this.debug.active) this.setDebug()
+		// if (this.debug.active) this.setDebug()
 	}
 
 	timelineInteractions() {
@@ -63,6 +64,7 @@ export default class SceneComponent {
 		material.onBeforeCompile = (shader) => {
 			shader.fragmentShader = `
 						uniform float uProgress;
+						uniform vec3 uColor;
 						varying vec2 vUv;
 
 						float random (in vec2 st) {
@@ -98,14 +100,15 @@ export default class SceneComponent {
 
 						float distance = distance(vUv, vec2(0.35, 0.5));
 
-						float alpha = smoothstep(uProgress, uProgress + noise(vUv *25.) * 0.1, distance );
+						float alpha = smoothstep(uProgress, uProgress + noise(vUv * 25.) * 0.1, distance );
 
-						vec4 placeholderColor = vec4(0.77,0.73,0.62, 1.);
+						vec4 placeholderColor = vec4(uColor, 1.);
 						vec4 color = mix(gl_FragColor, placeholderColor, alpha);
 						gl_FragColor = vec4(color.rgb, 1.0);
 					`,
 			)
 			shader.uniforms.uProgress = { value: 0 }
+			shader.uniforms.uColor = { value: new Color(0xdfbb86) }
 			this[sceneName + 'FragmentsUniforms'].push(shader.uniforms)
 
 			const vertexShader = shader.vertexShader
