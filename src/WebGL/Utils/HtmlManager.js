@@ -250,11 +250,14 @@ export default class HtmlManager extends EventEmitter {
 			this.removeClass('active', audioButton)
 			this.elements.audioElements.forEach((audioElement) => {
 				audioElement.muted = false
+				console.log('Muted', audioElement.muted)
+				console.log(audioElement)
 			})
 		} else {
 			this.addClass('active', audioButton)
 			this.elements.audioElements.forEach((audioElement) => {
 				audioElement.muted = true
+				console.log('Muted', audioElement.muted)
 			})
 		}
 	}
