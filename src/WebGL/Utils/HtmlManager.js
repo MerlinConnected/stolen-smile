@@ -54,16 +54,8 @@ export default class HtmlManager extends EventEmitter {
 	}
 
 	scrollPageAmmount() {
-		const scrollAmmount = window.scrollY
-
-		const windowHeight = window.innerHeight
-
-		const scrollPercent = scrollAmmount / windowHeight / 5
-
-		gsap.to('html', {
-			'--scroll': scrollPercent,
-			duration: 0,
-		})
+		const scrollPercent = window.scrollY / (document.body.offsetHeight - window.innerHeight)
+		document.body.style.setProperty('--scroll', scrollPercent.toString())
 	}
 
 	togglePlayPause() {

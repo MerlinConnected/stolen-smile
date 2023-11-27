@@ -14,8 +14,8 @@ export default class Camera {
 			fov: 16,
 			near: 1,
 			far: 35,
-			position: new Vector3(0, 2, 13),
-			target: new Vector3(0, 2, 0),
+			position: new Vector3(0, 1.8, 13),
+			target: new Vector3(0, 2, -3.25),
 		}
 
 		this.mouse = new Vector2(0, 0)
@@ -109,12 +109,12 @@ export default class Camera {
 	update() {
 		this.sceneCamera.position.x = MathUtils.lerp(
 			this.sceneCamera.position.x,
-			this.mouse.x * 0.4 + this.options.position.x,
+			this.mouse.x * 0.75 + this.options.position.x,
 			0.05,
 		)
 		this.sceneCamera.position.y = MathUtils.lerp(
 			this.sceneCamera.position.y,
-			this.mouse.y * 0.4 + this.options.position.y,
+			this.mouse.y * 0.75 + this.options.position.y,
 			0.05,
 		)
 		this.sceneCamera.lookAt(this.options.target)

@@ -196,7 +196,7 @@ export default class SceneComponent {
 
 		const paintTween = gsap.to(this.paint.mesh.position, {
 			z: this.options.sceneParams[sectionNumber].paintZPosition,
-			ease: this.options.isChanging ? 'power4.out' : 'power4.inOut',
+			ease: this.options.isChanging ? 'power3.out' : 'power4.inOut',
 			overwrite: 'auto',
 			onUpdate: () => {
 				this.camera.options.target.copy(this.paint.mesh.position)
@@ -267,7 +267,7 @@ export default class SceneComponent {
 		this.options.sceneParams.forEach((_, index) => {
 			ScrollTrigger.create({
 				trigger: `.section-${index}`,
-				start: 'top top',
+				start: 'top top+=50',
 				onToggle: (self) => {
 					if (!self.isActive) return
 					this.setSection(index)
