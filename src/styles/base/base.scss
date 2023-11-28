@@ -7,6 +7,9 @@ html,
 body {
 	font-family: $font-serif;
 }
+body {
+	overflow: hidden;
+}
 
 #webgl {
 	position: fixed;
@@ -16,7 +19,7 @@ body {
 }
 
 .section {
-	height: 200vh;
+	height: 100vh;
 }
 
 button {

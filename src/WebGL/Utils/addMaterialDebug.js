@@ -115,29 +115,38 @@ export default function addMaterialDebug(folder, material, options = {}) {
 		if (!(keyValue == null || materialOption.condition)) {
 			switch (materialOption.type) {
 				case 'image': {
+					const bindImage = (image) => {
+						gui
+							.addBinding({ image }, 'image', {
+								view: 'image',
+								label: key,
+							})
+							.on('change', ({ value }) => {
+								material[key] = new Texture(value)
+								material[key].needsUpdate = true
+							})
+					}
 					let image = keyValue.image
 					if (keyValue.image instanceof ImageBitmap) {
+						const scaleFactor = 0.1
 						const canvas = document.createElement('canvas')
 						const ctx = canvas.getContext('2d')
-						canvas.width = keyValue.image.width
-						canvas.height = keyValue.image.height
-						ctx.drawImage(keyValue.image, 0, 0)
-						const bitmapImageElement = new Image()
-						bitmapImageElement.src = canvas.toDataURL()
-						image = bitmapImageElement
-						canvas.remove()
+						canvas.width = keyValue.image.width * scaleFactor
+						canvas.height = keyValue.image.height * scaleFactor
+						ctx.drawImage(keyValue.image, 0, 0, canvas.width, canvas.height)
+
+						canvas.toBlob((blob) => {
+							const bitmapImageElement = new Image()
+							bitmapImageElement.src = URL.createObjectURL(blob)
+							image = bitmapImageElement
+							canvas.remove()
+
+							bindImage(image)
+						})
 					}
 
 					if (!image.src) return
-					gui
-						.addBinding({ image }, 'image', {
-							view: 'image',
-							label: key,
-						})
-						.on('change', ({ value }) => {
-							material[key] = new Texture(value)
-							material[key].needsUpdate = true
-						})
+					bindImage(image)
 					break
 				}
 				case 'list': {

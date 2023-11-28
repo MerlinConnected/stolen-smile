@@ -26,6 +26,7 @@ export default class Renderer {
 		this.instance = new WebGLRenderer({
 			canvas: this.canvas,
 			powerPreference: 'high-performance',
+			antialias: true,
 		})
 		this.instance.setClearColor(0xefcb99)
 		this.instance.setSize(this.sizes.width, this.sizes.height)
@@ -49,7 +50,7 @@ export default class Renderer {
 	}
 
 	setDebug() {
-		this.debugFolder = this.debug.ui.addFolder({ title: 'Postprocessing' })
+		this.debugFolder = this.debug.ui.addFolder({ title: 'Postprocessing', expanded: false })
 		this.debugFolder.addBinding(this.options, 'postprocessing', { label: 'active' })
 		this.debugFolder.addBinding(this.depthOfFieldEffect, 'bokehScale', {
 			label: 'bokehScale',

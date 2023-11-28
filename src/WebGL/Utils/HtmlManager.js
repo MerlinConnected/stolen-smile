@@ -54,21 +54,13 @@ export default class HtmlManager extends EventEmitter {
 	}
 
 	scrollPageAmmount() {
-		const scrollAmmount = window.scrollY
-
-		const windowHeight = window.innerHeight
-
-		const scrollPercent = scrollAmmount / windowHeight / 5
-
-		gsap.to('html', {
-			'--scroll': scrollPercent,
-			duration: 0,
-		})
+		const scrollPercent = window.scrollY / (document.body.offsetHeight - window.innerHeight)
+		document.body.style.setProperty('--scroll', scrollPercent.toString())
 	}
 
 	togglePlayPause() {
 		const { audioElement } = this.elements
-		this.elements.playPause.innerHTML = audioElement.paused ? 'pause' : 'lecture'
+		this.elements.playPause.innerHTML = audioElement.paused ? 'pause.' : 'lecture.'
 		audioElement.paused ? audioElement.play() : audioElement.pause()
 	}
 
@@ -92,6 +84,7 @@ export default class HtmlManager extends EventEmitter {
 				this.playAudio(this.elements.audioElement)
 			},
 		})
+		document.body.style.overflow = 'visible'
 
 		this.experience.audioManager.setCameraListener()
 
@@ -178,7 +171,7 @@ export default class HtmlManager extends EventEmitter {
 	}
 
 	displaySubtitles(trackElement) {
-		const activeCue = trackElement.track.activeCues[0]
+		const activeCue = trackElement.track.activeCues[trackElement.track.activeCues.length - 1]
 		if (activeCue) {
 			gsap.to('.subtitles-word', {
 				duration: 0.5,

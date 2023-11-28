@@ -15,7 +15,7 @@ export default class Camera {
 			near: 1,
 			far: 35,
 			position: new Vector3(0, 1.8, 13),
-			target: new Vector3(0, 1.8, 0),
+			target: new Vector3(0, 2, -3.25),
 		}
 
 		this.mouse = new Vector2(0, 0)
@@ -37,8 +37,8 @@ export default class Camera {
 		this.instance = this.sceneCamera
 
 		window.addEventListener('mousemove', (event) => {
-			this.mouse.x = 1 - event.clientX / this.sizes.width - 0.5
-			this.mouse.y = event.clientY / this.sizes.height - 0.5
+			this.mouse.x = event.clientX / this.sizes.width - 0.5
+			this.mouse.y = 1 - event.clientY / this.sizes.height - 0.5
 		})
 	}
 

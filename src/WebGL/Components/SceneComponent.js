@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import addMeshDebug from 'utils/addMeshDebug.js'
 import Joconde from 'components/Joconde.js'
+import { Color } from 'three'
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
@@ -63,6 +64,7 @@ export default class SceneComponent {
 		material.onBeforeCompile = (shader) => {
 			shader.fragmentShader = `
 						uniform float uProgress;
+						uniform vec3 uColor;
 						varying vec2 vUv;
 
 						float random (in vec2 st) {
@@ -98,14 +100,15 @@ export default class SceneComponent {
 
 						float distance = distance(vUv, vec2(0.35, 0.5));
 
-						float alpha = smoothstep(uProgress, uProgress + noise(vUv *25.) * 0.1, distance );
+						float alpha = smoothstep(uProgress, uProgress + noise(vUv * 25.) * 0.1, distance );
 
-						vec4 placeholderColor = vec4(0.77,0.73,0.62, 1.);
+						vec4 placeholderColor = vec4(uColor, 1.);
 						vec4 color = mix(gl_FragColor, placeholderColor, alpha);
 						gl_FragColor = vec4(color.rgb, 1.0);
 					`,
 			)
 			shader.uniforms.uProgress = { value: 0 }
+			shader.uniforms.uColor = { value: new Color(0xdfbb86) }
 			this[sceneName + 'FragmentsUniforms'].push(shader.uniforms)
 
 			const vertexShader = shader.vertexShader
@@ -196,10 +199,10 @@ export default class SceneComponent {
 
 		const paintTween = gsap.to(this.paint.mesh.position, {
 			z: this.options.sceneParams[sectionNumber].paintZPosition,
-			ease: this.options.isChanging ? 'power4.out' : 'power4.inOut',
+			ease: this.options.isChanging ? 'power3.out' : 'power4.inOut',
 			overwrite: 'auto',
 			onUpdate: () => {
-				this.camera.options.target = this.paint.mesh.position
+				this.camera.options.target.copy(this.paint.mesh.position)
 				if (!this.options.isChanging) return
 				const progress = paintTween.progress()
 				if (progress > 0.6) {
@@ -245,19 +248,6 @@ export default class SceneComponent {
 			},
 		})
 
-		// if (!isReverse) {
-		// 	gsap.to(this.camera.sceneCamera, {
-		// 		keyframes: [
-		// 			{ ease: 'power1.in', duration: 0.9, fov: 12 },
-		// 			{ ease: 'power1.out', duration: 1, fov: this.camera.options.fov },
-		// 		],
-		// 		delay: 2,
-		// 		onUpdate: () => {
-		// 			this.camera.sceneCamera.updateProjectionMatrix()
-		// 		},
-		// 	})
-		// }
-
 		this.setChapterNumber()
 	}
 
@@ -267,7 +257,7 @@ export default class SceneComponent {
 		this.options.sceneParams.forEach((_, index) => {
 			ScrollTrigger.create({
 				trigger: `.section-${index}`,
-				start: 'top top',
+				start: 'top top+=50',
 				onToggle: (self) => {
 					if (!self.isActive) return
 					this.setSection(index)
@@ -302,6 +292,5 @@ export default class SceneComponent {
 		addMeshDebug(this.debugFolder, this.louvreModel)
 		addMeshDebug(this.debugFolder, this.roomModel)
 		addMeshDebug(this.debugFolder, this.shopModel)
-		addMeshDebug(this.debugFolder, this.louvreModel)
 	}
 }
